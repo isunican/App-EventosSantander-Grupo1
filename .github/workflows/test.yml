@@ -18,8 +18,6 @@ jobs:
             # Execute unit tests
             - name: Android units tests
               working-directory: ./AndroidProject
-              env:
-                GITHUB_TOKEN: ${{ secrets.TOKEN }}
               run: ./gradlew clean testDebugUnitTest jacocoTestReportDebug sonarqube
               
             # Show a report of the unit tests results
