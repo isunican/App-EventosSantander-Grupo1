@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
+import com.isunican.eventossantander.view.events.EventArrayAdapter;
 import com.squareup.picasso.Picasso;
 
 public class EventsDetailActivity extends AppCompatActivity {
@@ -54,7 +55,11 @@ public class EventsDetailActivity extends AppCompatActivity {
         eventDateText.setText(event.getFecha());
         eventDescripText.setText(Html.fromHtml(event.getDescripcion()));
         eventDescripText.setMovementMethod(LinkMovementMethod.getInstance());
-        Picasso.get().load(event.getImagen()).into(eventImage);
+        if (event.getImagen() != "" || event.getImagen() == null) {
+            eventImage.setVisibility(View.INVISIBLE);//Si el evento no tiene imagen, no se muestra
+        } else {
+            Picasso.get().load(event.getImagen()).into(eventImage);
+        }
         eventImage.setAdjustViewBounds(true);
         eventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,5 +71,6 @@ public class EventsDetailActivity extends AppCompatActivity {
         //googleMap.addMarker(new MarkerOptions().position(new LatLng( event.getLatitud(), -event.getLongitud())).title("Marker"));
 
     }
+
 
 }
