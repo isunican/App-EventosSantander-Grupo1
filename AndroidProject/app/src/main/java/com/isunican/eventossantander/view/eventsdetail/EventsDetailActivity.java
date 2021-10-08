@@ -55,7 +55,7 @@ public class EventsDetailActivity extends AppCompatActivity {
         eventDateText.setText(event.getFecha());
         eventDescripText.setText(Html.fromHtml(event.getDescripcion()));
         eventDescripText.setMovementMethod(LinkMovementMethod.getInstance());
-        if (event.getImagen() != "" || event.getImagen() == null) {
+        if (event.getImagen() == "" || event.getImagen() == null) {
             eventImage.setVisibility(View.INVISIBLE);//Si el evento no tiene imagen, no se muestra
         } else {
             Picasso.get().load(event.getImagen()).into(eventImage);
