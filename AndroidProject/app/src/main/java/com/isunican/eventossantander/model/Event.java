@@ -99,8 +99,6 @@ public class Event implements Parcelable {
     public String getImagen() { return imagen; }
     public void setImagen(String imagen) { this.imagen = imagen; }
 
-
-
     /**
      * toString
      *
