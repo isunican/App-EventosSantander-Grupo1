@@ -21,7 +21,7 @@ public class EventsRepository {
     /**
      * The data source URL can be modified. This is useful for tests.
      */
-    private static EventsAPIService.Source source = EventsAPIService.Source.UNICAN;
+    private static EventsAPIService.Source source = EventsAPIService.Source.AYTO;
 
     /*
     Problem: in some UI Tests, the tests fails because Espresso does not wait until the data

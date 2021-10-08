@@ -17,7 +17,12 @@
             android:exported="true" />
         <activity
             android:name=".view.eventsdetail.EventsDetailActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".view.events.EventsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.events.EventsActivity" />
+        </activity>
         <activity
             android:name=".view.events.EventsActivity"
             android:exported="true" >
