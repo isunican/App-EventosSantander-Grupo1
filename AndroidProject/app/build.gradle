@@ -79,4 +79,6 @@ dependencies {
     // picasso (for image loading from URL)
     implementation 'com.squareup.picasso:picasso:2.8'
 
+    implementation 'com.google.android.gms:play-services-maps:7.0.0'
+
 }

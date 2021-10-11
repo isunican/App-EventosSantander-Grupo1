@@ -1,28 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    android:orientation="vertical"
-    tools:context=".view.eventsdetail.EventsDetailActivity">
-
-    <TextView
-        android:id="@+id/event_detail_title"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:fillViewport="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        tools:text="@tools:sample/lorem[5]" />
+        android:layout_height="match_parent"
+        android:background="#F5F5F5"
+        android:orientation="vertical"
+        tools:context=".view.eventsdetail.EventsDetailActivity"
+        >
 
-    <TextView
-        android:id="@+id/event_detail_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        tools:text="@tools:sample/date/ddmmyy" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/event_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAlignment="center"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/lorem[5]" />
+
+            <TextView
+                android:id="@+id/event_detail_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/date/ddmmyy" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/event_detail_mapView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="#00000000"
+                android:clickable="true"
+                app:uiCompass="true"
+                tools:ignore="SpeakableTextPresentCheck"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/event_detail_descrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginRight="10sp"
+                android:layout_marginBottom="5sp"
+                android:layout_weight="2"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"
+                tools:text="PRUEBA" />
+
+            <ImageView
+                android:id="@+id/event_detail_Image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:contentDescription="@string/todo"
+                tools:ignore="ImageContrastCheck"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <Button
+                android:id="@+id/event_detail_MasInfo"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:text="@string/mas_informacion" />
+        </LinearLayout>
+    </ScrollView>

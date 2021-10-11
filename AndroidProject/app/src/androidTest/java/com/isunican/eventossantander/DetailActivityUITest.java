@@ -45,12 +45,14 @@ public class DetailActivityUITest {
 
 
     @Test
-    public void vistaDetalladaGasolinera(){
+    public void vistaDetalladaEvento(){
         // Open detail view of first event
 //        SystemClock.sleep(20000);
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).perform(click());
 
         // Check if data matches
-        onView(withId(R.id.event_detail_title)).check(matches(withText("Centro de Arte Faro  Cabo Mayor")));
+ //       onView(withId(R.id.event_detail_title)).check(matches(withText("Centro de Arte Faro  Cabo Mayor")));
+        onView(withId(R.id.event_detail_title)).check(matches(withText("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea")));
+
     }
 }
