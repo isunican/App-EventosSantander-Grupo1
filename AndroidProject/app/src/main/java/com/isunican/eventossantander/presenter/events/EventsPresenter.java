@@ -87,13 +87,13 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
-    public void onKeywordsFilter(String busqueda) {
+    public void onKeywordsFilter(String search) {
         List<Event> eventosFiltrados = new ArrayList<Event>();
-        busqueda = Normalizer.normalize(busqueda, Normalizer.Form.NFD);
-        busqueda = busqueda.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
+        search = Normalizer.normalize(search, Normalizer.Form.NFD);
+        search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
         for (Event e: cachedEvents) {
-            if (e.getNombre().toLowerCase().contains(busqueda.toLowerCase()) || e.getDescripcion().toLowerCase().contains(busqueda.toLowerCase()) || e.getCategoria().toLowerCase().contains(busqueda.toLowerCase()) ||
-                    e.getNombreAlternativo().toLowerCase().contains(busqueda.toLowerCase()) || e.getDescripcionAlternativa().toLowerCase().contains(busqueda.toLowerCase())) {
+            if (e.getNombre().toLowerCase().contains(search.toLowerCase()) || e.getDescripcion().toLowerCase().contains(search.toLowerCase()) || e.getCategoria().toLowerCase().contains(search.toLowerCase()) ||
+                    e.getNombreAlternativo().toLowerCase().contains(search.toLowerCase()) || e.getDescripcionAlternativa().toLowerCase().contains(search.toLowerCase())) {
                 eventosFiltrados.add(e);
             }
         }
