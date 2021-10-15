@@ -56,7 +56,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         if (!inputSearch.getText().toString().equals("")) {
             String str = inputSearch.getText().toString();
             inputSearch.setText("");
-            presenter.filtrarPorPalabrasClave(str);
+            presenter.onKeywordsFilter(str);
             inputSearch.setText(str);
             return;
         }
@@ -163,7 +163,11 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0); //Para esconder el teclado una vez el usuario pulse enter
-                presenter.filtrarPorPalabrasClave(inputSearch.getText().toString());
+                if (inputSearch.getText().toString().isEmpty()) {
+                    return false;
+                } else {
+                    presenter.onKeywordsFilter(inputSearch.getText().toString());
+                }
                 return true;
             }
             return false;
