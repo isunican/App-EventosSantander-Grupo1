@@ -1,5 +1,7 @@
 package com.isunican.eventossantander.view.events;
 
+import android.content.Context;
+
 import com.isunican.eventossantander.model.Event;
 
 import java.util.List;
@@ -10,10 +12,13 @@ public interface IEventsContract {
 
         void onEventClicked(int eventIndex);
 
-        void onReloadClicked();
+        void onReloadClicked(boolean showMessage);
+
+        void onReloadCachedEventsClicked();
 
         void onInfoClicked();
 
+        void filtrarPorPalabrasClave(String busqueda);
     }
 
     public interface View {
@@ -22,11 +27,16 @@ public interface IEventsContract {
 
         void onLoadError();
 
-        void onLoadSuccess(int elementsLoaded);
+        void onLoadSuccess(int elementsLoaded, boolean showMessage);
 
         void openEventDetails(Event event);
 
         void openInfoView();
 
+        void onInternetConnectionFailure();
+
+        Context getContext();
+
+        void onLoadingItems();
     }
 }

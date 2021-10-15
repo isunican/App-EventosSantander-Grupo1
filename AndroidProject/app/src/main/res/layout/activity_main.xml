@@ -4,7 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.events.EventsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <EditText
+            android:id="@+id/et_PalabrasClave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="@string/introduzca_las_palabras_clave"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:textColorHint="#757575" />
+
+        <ImageView
+            android:id="@+id/lupa"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/icono_de_lupa"
+            app:srcCompat="@android:drawable/ic_menu_search"
+            tools:ignore="ImageContrastCheck,ImageContrastCheck" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/eventsListView"
