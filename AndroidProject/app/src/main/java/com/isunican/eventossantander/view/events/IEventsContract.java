@@ -35,7 +35,7 @@ public interface IEventsContract {
 
         void onInternetConnectionFailure();
 
-        Context getContext();
+        boolean hasInternetConnection();
 
         void onLoadingItems();
     }

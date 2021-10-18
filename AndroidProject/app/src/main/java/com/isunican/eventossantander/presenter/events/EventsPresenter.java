@@ -10,6 +10,7 @@ import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class EventsPresenter implements IEventsContract.Presenter {
 
@@ -29,10 +30,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     private void loadData(boolean showMessage) {
 
-        NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
-                view.getContext().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-
-        if (info == null) {
+        if (!view.hasInternetConnection()) {
             view.onInternetConnectionFailure();
             return;
         }
@@ -86,8 +84,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
         search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
         for (Event e: copyAllEvents) {
-            if (e.getNombre().toLowerCase().contains(search.toLowerCase()) || e.getDescripcion().toLowerCase().contains(search.toLowerCase()) || e.getCategoria().toLowerCase().contains(search.toLowerCase()) ||
-                    e.getNombreAlternativo().toLowerCase().contains(search.toLowerCase()) || e.getDescripcionAlternativa().toLowerCase().contains(search.toLowerCase())) {
+            if (e.toString().toLowerCase().contains(search.toLowerCase())) {
                 eventosFiltrados.add(e);
             }
         }

@@ -149,8 +149,14 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     }
 
     @Override
-    public Context getContext() {
-        return getApplicationContext();
+    public boolean hasInternetConnection() {
+
+        NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+        if (info == null) {
+            return false;
+        }else {return true;}
     }
 
     @Override

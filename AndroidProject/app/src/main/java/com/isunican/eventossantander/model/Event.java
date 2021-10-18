@@ -111,18 +111,8 @@ public class Event implements Parcelable {
     @Override
     public String toString(){
         String textoEvento = "";
-        textoEvento +=
-                "Id: " + getIdentificador() + "\n"+
-                        "Nombre: " + getNombre() + "\n" +
-                        "Nombre alternativo: " + getNombreAlternativo() + "\n" +
-                        "Categoría: " + getCategoria() + "\n" +
-                        "Fecha: " + getFecha() + "\n" +
-                        "Localización: " + getLongitud() + " " + getLatitud() + "\n" +
-                        "Enlace: " + getEnlace() + "\n" +
-                        "Enlace alternativo: " + getEnlaceAlternativo() + "\n" +
-                        "Imagen: " + getImagen() + "\n" +
-                        "Descripción: " + getDescripcion() + "\n" +
-                        "Descripción alternativa: " + getDescripcionAlternativa() + "\n\n";
+        textoEvento += getIdentificador() + getNombre()+ getNombreAlternativo()+ getCategoria()+ getFecha() + getEnlace() + getEnlaceAlternativo()
+                + getDescripcion() + getDescripcionAlternativa();
 
         return textoEvento;
     }
