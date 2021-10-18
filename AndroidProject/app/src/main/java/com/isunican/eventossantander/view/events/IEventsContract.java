@@ -18,7 +18,7 @@ public interface IEventsContract {
 
         void onInfoClicked();
 
-        void onKeywordsFilter(String busqueda);
+        void onKeywordsFilter(String busqueda, boolean showMsg);
     }
 
     public interface View {

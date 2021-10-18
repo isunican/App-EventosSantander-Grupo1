@@ -1,15 +1,9 @@
 package com.isunican.eventossantander.presenter.events;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.Listener;
@@ -17,7 +11,6 @@ import com.isunican.eventossantander.view.events.IEventsContract;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -91,19 +84,18 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
-    public void onKeywordsFilter(String search) {
+    public void onKeywordsFilter(String search, boolean showMsg) {
         List<Event> eventosFiltrados = new ArrayList<Event>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
         search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
-        for (Event e: cachedEvents) {
-            if (e.getNombre().toLowerCase().contains(search.toLowerCase()) || e.getDescripcion().toLowerCase().contains(search.toLowerCase()) || e.getCategoria().toLowerCase().contains(search.toLowerCase()) ||
-                    e.getNombreAlternativo().toLowerCase().contains(search.toLowerCase()) || e.getDescripcionAlternativa().toLowerCase().contains(search.toLowerCase())) {
+        for (Event e: copyAllEvents) {
+            if (e.toString().toLowerCase().contains(search.toLowerCase())) {
                 eventosFiltrados.add(e);
             }
         }
         cachedEvents = eventosFiltrados;
         view.onEventsLoaded(eventosFiltrados);
-        view.onLoadSuccess(eventosFiltrados.size(), true);
+        view.onLoadSuccess(eventosFiltrados.size(), showMsg);
     }
 
     public List<Event> getCachedEvents() {
