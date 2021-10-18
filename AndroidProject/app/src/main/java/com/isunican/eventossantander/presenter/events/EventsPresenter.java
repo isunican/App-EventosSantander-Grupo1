@@ -85,7 +85,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
         List<Event> eventosFiltrados = new ArrayList<>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
         search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
-        for (Event e: cachedEvents) {
+        for (Event e: copyAllEvents) {
             if (e.getNombre().toLowerCase().contains(search.toLowerCase()) || e.getDescripcion().toLowerCase().contains(search.toLowerCase()) || e.getCategoria().toLowerCase().contains(search.toLowerCase()) ||
                     e.getNombreAlternativo().toLowerCase().contains(search.toLowerCase()) || e.getDescripcionAlternativa().toLowerCase().contains(search.toLowerCase())) {
                 eventosFiltrados.add(e);

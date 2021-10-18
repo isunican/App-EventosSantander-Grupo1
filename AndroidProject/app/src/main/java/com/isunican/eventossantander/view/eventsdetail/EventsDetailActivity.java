@@ -2,28 +2,25 @@ package com.isunican.eventossantander.view.eventsdetail;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.view.events.EventArrayAdapter;
 import com.squareup.picasso.Picasso;
 
 public class EventsDetailActivity extends AppCompatActivity {
 
     public static final String INTENT_EVENT = "INTENT_EVENT";
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +44,11 @@ public class EventsDetailActivity extends AppCompatActivity {
         // Set information
         eventTitleText.setText(event.getNombre());
         eventDateText.setText(event.getFecha());
-        eventDescripText.setText(Html.fromHtml(event.getDescripcion()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            eventDescripText.setText(Html.fromHtml(event.getDescripcion(), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            eventDescripText.setText(Html.fromHtml(event.getDescripcion()));
+        }
         eventDescripText.setMovementMethod(LinkMovementMethod.getInstance());
         if (event.getImagen().equals("") || event.getImagen() == null) {
             eventImage.setVisibility(View.INVISIBLE);//Si el evento no tiene imagen, no se muestra

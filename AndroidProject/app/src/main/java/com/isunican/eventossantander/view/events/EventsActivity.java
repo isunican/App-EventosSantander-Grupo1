@@ -39,7 +39,6 @@ import java.util.List;
 public class EventsActivity extends AppCompatActivity implements IEventsContract.View {
 
     private IEventsContract.Presenter presenter;
-    private EventArrayAdapter adapter;
     private EditText inputSearch;
 
     @Override
@@ -52,6 +51,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
     @Override
     public void onEventsLoaded(List<Event> events) {
+        EventArrayAdapter adapter;
 
         if (!inputSearch.getText().toString().equals("")) {
             String str = inputSearch.getText().toString();
@@ -65,9 +65,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         ListView listView = findViewById(R.id.eventsListView);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            presenter.onEventClicked(position);
-        });
+        listView.setOnItemClickListener((parent, view, position, id) -> presenter.onEventClicked(position));
     }
 
     @Override
@@ -139,9 +137,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         AlertDialog alert = new AlertDialog.Builder(this).create();
         alert.setTitle("Error de conectividad");
         alert.setMessage("Conéctate a una red Wi-Fi o móvil y pulse el botón de actualizar.");
-        alert.setButton(DialogInterface.BUTTON_POSITIVE,"Actualizar", (dialog, which) -> {
-            presenter.onReloadClicked(true);
-        });
+        alert.setButton(DialogInterface.BUTTON_POSITIVE,"Actualizar", (dialog, which) ->
+            presenter.onReloadClicked(true)
+        );
         alert.setButton(DialogInterface.BUTTON_NEGATIVE, "Cerrar", (dialogInterface, i) -> dialogInterface.dismiss());
         alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
         WindowManager.LayoutParams wmlp = alert.getWindow().getAttributes();
