@@ -25,6 +25,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     private final IEventsContract.View view;
     private List<Event> cachedEvents;
+    private List<Event> copyAllEvents;
 
     public EventsPresenter(IEventsContract.View view) {
         this.view = view;
@@ -52,12 +53,14 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 view.onEventsLoaded(data);
                 view.onLoadSuccess(data.size(), showMessage);
                 cachedEvents = data;
+                copyAllEvents = data;
             }
 
             @Override
             public void onFailure() {
                 view.onLoadError();
                 cachedEvents = null;
+                copyAllEvents = null;
             }
         });
     }
@@ -77,8 +80,9 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     @Override
     public void onReloadCachedEventsClicked() {
-        view.onEventsLoaded(cachedEvents);
-        view.onLoadSuccess(cachedEvents.size(), false);
+        cachedEvents = copyAllEvents;
+        view.onEventsLoaded(copyAllEvents);
+        view.onLoadSuccess(copyAllEvents.size(), false);
     }
 
     @Override
@@ -97,7 +101,12 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 eventosFiltrados.add(e);
             }
         }
+        cachedEvents = eventosFiltrados;
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), true);
+    }
+
+    public List<Event> getCachedEvents() {
+        return cachedEvents;
     }
 }
