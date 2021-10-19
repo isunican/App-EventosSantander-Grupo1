@@ -28,7 +28,8 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.onLoadingItems();
     }
 
-    private void loadData(boolean showMessage) {
+    //Tiene que ser publico por los test. No cambiar a private aunque lo diga el sonar
+    public void loadData(boolean showMessage) {
 
         if (!view.hasInternetConnection()) {
             view.onInternetConnectionFailure();
@@ -92,7 +93,9 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), true);
     }
-
+    /**
+     * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
+     */
     public List<Event> getCachedEvents() {
         return cachedEvents;
     }
