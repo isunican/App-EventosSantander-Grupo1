@@ -13,19 +13,25 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
 
 import android.view.KeyEvent;
+import android.view.View;
 
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.events.EventsActivity;
+import com.isunican.eventossantander.view.events.IEventsContract;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class EventsActivityUITest {
+
+    private View decorView;
 
     /**
      * Load known events json
@@ -34,13 +40,13 @@ public class EventsActivityUITest {
     @BeforeClass
     public static void setUp() {
         EventsRepository.setLocalSource();
-        IdlingRegistry.getInstance().register(EventsRepository.getIdlingResource());
     }
 
-    @AfterClass
-    public static void clean() {
-        EventsRepository.setOnlineSource();
-        IdlingRegistry.getInstance().unregister(EventsRepository.getIdlingResource());
+    @Before
+    public void setUp2(){
+        activityRule.getScenario().onActivity(
+                activity -> decorView = activity.getWindow().getDecorView()
+        );
     }
 
     @Rule
@@ -73,9 +79,10 @@ public class EventsActivityUITest {
         onView(withId(R.id.et_PalabrasClave)).perform(typeText("PalabraRara"),
                 pressKey(KeyEvent.KEYCODE_ENTER),closeSoftKeyboard());
 
+        onView(withText("No hay ningún evento relacionado con la búsqueda")).inRoot(RootMatchers.withDecorView(not(decorView))).check(matches(isDisplayed()));
+
         //assertThat(onView(withId(R.id.et_PalabrasClave)), hasSize(0));
         //onView(withId(R.id.eventsListView)).check(matches(nullValue()));
-        //onView(withText("No hay ningún evento relacionado con la búsqueda")).check(matches(isDisplayed()));
 
         // IVF.1d Volver y ver que se muestra la lista
         onView(withId(R.id.actionbarTitle)).perform(click());
