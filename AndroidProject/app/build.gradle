@@ -54,6 +54,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -80,5 +86,13 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.8'
 
     implementation 'com.google.android.gms:play-services-maps:7.0.0'
+
+    // Mockito (para pruebas)
+    def mockito_version= 'latest.release'
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+
+    // Roboelectric (para pruebas)
+    testImplementation 'org.robolectric:robolectric:4.6'
 
 }

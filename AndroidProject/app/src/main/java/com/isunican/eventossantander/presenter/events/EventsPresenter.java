@@ -1,23 +1,14 @@
 package com.isunican.eventossantander.presenter.events;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
-
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,6 +16,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     private final IEventsContract.View view;
     private List<Event> cachedEvents;
+    private List<Event> copyAllEvents;
 
     public EventsPresenter(IEventsContract.View view) {
         this.view = view;
@@ -36,12 +28,10 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.onLoadingItems();
     }
 
-    private void loadData(boolean showMessage) {
+    //Tiene que ser publico por los test. No cambiar a private aunque lo diga el sonar
+    public void loadData(boolean showMessage) {
 
-        NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
-                view.getContext().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-
-        if (info == null) {
+        if (!view.hasInternetConnection()) {
             view.onInternetConnectionFailure();
             return;
         }
@@ -52,12 +42,14 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 view.onEventsLoaded(data);
                 view.onLoadSuccess(data.size(), showMessage);
                 cachedEvents = data;
+                copyAllEvents = data;
             }
 
             @Override
             public void onFailure() {
                 view.onLoadError();
                 cachedEvents = null;
+                copyAllEvents = null;
             }
         });
     }
@@ -72,14 +64,14 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     @Override
     public void onReloadClicked(boolean showMessage) {
-
         loadData(showMessage);
     }
 
     @Override
     public void onReloadCachedEventsClicked() {
-        view.onEventsLoaded(cachedEvents);
-        view.onLoadSuccess(cachedEvents.size(), false);
+        cachedEvents = copyAllEvents;
+        view.onEventsLoaded(copyAllEvents);
+        view.onLoadSuccess(copyAllEvents.size(), false);
     }
 
     @Override
@@ -88,17 +80,23 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
-    public void filtrarPorPalabrasClave(String busqueda) {
-        List<Event> eventosFiltrados = new ArrayList<Event>();
-        busqueda = Normalizer.normalize(busqueda, Normalizer.Form.NFD);
-        busqueda = busqueda.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
-        for (Event e: cachedEvents) {
-            if (e.getNombre().toLowerCase().contains(busqueda) || e.getDescripcion().toLowerCase().contains(busqueda) || e.getCategoria().toLowerCase().contains(busqueda) ||
-                    e.getNombreAlternativo().toLowerCase().contains(busqueda) || e.getDescripcionAlternativa().toLowerCase().contains(busqueda)) {
+    public void onKeywordsFilter(String search) {
+        List<Event> eventosFiltrados = new ArrayList<>();
+        search = Normalizer.normalize(search, Normalizer.Form.NFD);
+        search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
+        for (Event e: copyAllEvents) {
+            if (e.toString().toLowerCase().contains(search.toLowerCase())) {
                 eventosFiltrados.add(e);
             }
         }
+        cachedEvents = eventosFiltrados;
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), true);
+    }
+    /**
+     * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
+     */
+    public List<Event> getCachedEvents() {
+        return cachedEvents;
     }
 }

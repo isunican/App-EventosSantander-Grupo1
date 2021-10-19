@@ -39,7 +39,6 @@ import java.util.List;
 public class EventsActivity extends AppCompatActivity implements IEventsContract.View {
 
     private IEventsContract.Presenter presenter;
-    private EventArrayAdapter adapter;
     private EditText inputSearch;
 
     @Override
@@ -52,11 +51,12 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
     @Override
     public void onEventsLoaded(List<Event> events) {
+        EventArrayAdapter adapter;
 
         if (!inputSearch.getText().toString().equals("")) {
             String str = inputSearch.getText().toString();
             inputSearch.setText("");
-            presenter.filtrarPorPalabrasClave(str);
+            presenter.onKeywordsFilter(str);
             inputSearch.setText(str);
             return;
         }
@@ -65,9 +65,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         ListView listView = findViewById(R.id.eventsListView);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            presenter.onEventClicked(position);
-        });
+        listView.setOnItemClickListener((parent, view, position, id) -> presenter.onEventClicked(position));
     }
 
     @Override
@@ -139,9 +137,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         AlertDialog alert = new AlertDialog.Builder(this).create();
         alert.setTitle("Error de conectividad");
         alert.setMessage("Conéctate a una red Wi-Fi o móvil y pulse el botón de actualizar.");
-        alert.setButton(DialogInterface.BUTTON_POSITIVE,"Actualizar", (dialog, which) -> {
-            presenter.onReloadClicked(true);
-        });
+        alert.setButton(DialogInterface.BUTTON_POSITIVE,"Actualizar", (dialog, which) ->
+            presenter.onReloadClicked(true)
+        );
         alert.setButton(DialogInterface.BUTTON_NEGATIVE, "Cerrar", (dialogInterface, i) -> dialogInterface.dismiss());
         alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
         WindowManager.LayoutParams wmlp = alert.getWindow().getAttributes();
@@ -151,8 +149,14 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     }
 
     @Override
-    public Context getContext() {
-        return getApplicationContext();
+    public boolean hasInternetConnection() {
+
+        NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+        if (info == null) {
+            return false;
+        }else {return true;}
     }
 
     @Override
@@ -163,7 +167,11 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0); //Para esconder el teclado una vez el usuario pulse enter
-                presenter.filtrarPorPalabrasClave(inputSearch.getText().toString());
+                if (inputSearch.getText().toString().isEmpty()) {
+                    return false;
+                } else {
+                    presenter.onKeywordsFilter(inputSearch.getText().toString());
+                }
                 return true;
             }
             return false;
