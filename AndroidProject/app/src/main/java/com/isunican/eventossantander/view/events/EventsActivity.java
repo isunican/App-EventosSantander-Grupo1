@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,12 +33,17 @@ import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class EventsActivity extends AppCompatActivity implements IEventsContract.View {
 
     private IEventsContract.Presenter presenter;
     private EventArrayAdapter adapter;
     private EditText inputSearch;
+
+    private Toast msgToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         if (!inputSearch.getText().toString().equals("")) {
             String str = inputSearch.getText().toString();
             inputSearch.setText("");
-            presenter.onKeywordsFilter(str, false);
+            presenter.onKeywordsFilter(str, false, false);
             inputSearch.setText(str);
             return;
         }
@@ -69,16 +75,24 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
     @Override
     public void onLoadError() {
-        Toast.makeText(this, "Se ha producido un error al cargar los eventos", Toast.LENGTH_SHORT).show();
+        if (msgToast != null) {
+            msgToast.cancel();
+        }
+        msgToast = Toast.makeText(this, "Se ha producido un error al cargar los eventos", Toast.LENGTH_SHORT);
+        msgToast.show();
     }
 
     @Override
     public void onLoadSuccess(int elementsLoaded, boolean showMessage) {
-        if (elementsLoaded == 0) {
-            Toast.makeText(this, "No hay ningún evento relacionado con la búsqueda", Toast.LENGTH_SHORT).show();
-        } else if (showMessage) {
-            Toast.makeText(this, String.format("Cargados %d eventos", elementsLoaded), Toast.LENGTH_SHORT).show();
+        if (msgToast != null) {
+            msgToast.cancel();
         }
+        if (elementsLoaded == 0) {
+            msgToast = Toast.makeText(this, "No hay ningún evento relacionado con la búsqueda", Toast.LENGTH_SHORT);
+        } else if (showMessage) {
+            msgToast = Toast.makeText(this, String.format("Cargados %d eventos", elementsLoaded), Toast.LENGTH_SHORT);
+        }
+        msgToast.show();
     }
 
     @Override
@@ -159,7 +173,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
                 if (inputSearch.getText().toString().isEmpty()) {
                     return false;
                 } else {
-                    presenter.onKeywordsFilter(inputSearch.getText().toString(), true);
+                    presenter.onKeywordsFilter(inputSearch.getText().toString(), true, false);
                 }
                 return true;
             }
@@ -167,7 +181,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         });
 
         inputSearch.addTextChangedListener(new TextWatcher() {
-            private boolean editing;
+            private boolean editing = false;
             private int previousLength = 0;
 
             @Override
@@ -180,22 +194,28 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
                 editing = true;
                 try {
-                    onTextChange();
+                    onTextChange(true);
                 } finally {
                     editing = false;
                 }
             }
 
-            protected void onTextChange() {
+            protected void onTextChange(boolean searchInCachedEvents) {
                 previousLength = inputSearch.getText().length();
-                presenter.onKeywordsFilter(inputSearch.getText().toString(), false);
+                if (previousLength % 2 == 0) {
+                    presenter.onKeywordsFilter(inputSearch.getText().toString(), false, searchInCachedEvents);
+                }
                 inputSearch.setSelection(inputSearch.getText().length());
             }
 
             @Override
             public final void afterTextChanged(Editable s) {
-                if (previousLength > s.length()) {
-                    onTextChange();
+                if (s.length() == 0) {
+                    presenter.onReloadCachedEventsClicked();
+                    return;
+                }
+                if (previousLength > s.length()) { //back button pressed
+                    onTextChange(false);
                 }
             }
 
