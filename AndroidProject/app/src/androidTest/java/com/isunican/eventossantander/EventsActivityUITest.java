@@ -74,10 +74,15 @@ public class EventsActivityUITest {
      */
     @Test
     public void vistaListaEventoBusquedaKeywords(){
+
+        String text = "Palacio de festivales";
+        String text2 = "Palabrarara";
+
         // IVF.1a Lista con 5 coincidencias
         // Se introduce el texto con el metodo typeText ya que la busqueda se realiza al darle a enter
-        onView(withId(R.id.et_PalabrasClave)).perform(typeText("Palacio de Festivales"),
-                    pressKey(KeyEvent.KEYCODE_ENTER),closeSoftKeyboard());
+        writeTextOnView(R.id.et_PalabrasClave, text);
+
+        onView(withId(R.id.et_PalabrasClave)).perform(pressKey(KeyEvent.KEYCODE_ENTER), closeSoftKeyboard());
 
         //Se comprueba que salta el toast
         onView(withText("Cargados 5 eventos")).inRoot(RootMatchers.withDecorView(not(decorView))).check(matches(isDisplayed()));
@@ -95,8 +100,8 @@ public class EventsActivityUITest {
         // IVF.1c Lista Vacia
         onView(withId(R.id.et_PalabrasClave)).perform(replaceText(""), closeSoftKeyboard());
         // Se introduce el texto con el metodo typeText ya que la busqueda se realiza al darle a enter
-        onView(withId(R.id.et_PalabrasClave)).perform(typeText("PalabraRara"),
-                pressKey(KeyEvent.KEYCODE_ENTER),closeSoftKeyboard());
+        writeTextOnView(R.id.et_PalabrasClave, text2);
+        onView(withId(R.id.et_PalabrasClave)).perform(pressKey(KeyEvent.KEYCODE_ENTER), closeSoftKeyboard());
 
         //Se comprueba que salta el toast
         onView(withText("No hay ningún evento relacionado con la búsqueda")).inRoot(RootMatchers.withDecorView(not(decorView))).check(matches(isDisplayed()));
@@ -111,6 +116,17 @@ public class EventsActivityUITest {
 
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea")));
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(344).onChildView(withId(R.id.item_event_title)).check(matches(withText("Visiones Urbanas con ArteSantander 2021")));
+    }
+
+    private void writeTextOnView(int id, String text){
+        for (int i=0; i<text.length(); i++) {
+            onView(withId(id)).perform(typeText(text.substring(i, i+1)));
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

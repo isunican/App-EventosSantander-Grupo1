@@ -67,21 +67,21 @@ public class EventsPresenterTest {
         List<Event> lista;
 
         // UGIC.1a Lista con 4 Coincidencias
-        sut.onKeywordsFilter("Palacio de Festivales");
+        sut.onKeywordsFilter("Palacio de Festivales", false, false);
         lista = sut.getCachedEvents();
         assertEquals(5, lista.size());
         assertEquals("\"Entre nosotras\". Concierto", lista.get(0).getNombre());
         assertEquals("V Semana Internacional de Cine ", lista.get(4).getNombre());
 
         // UGIC.1b Lista Completa
-        sut.onKeywordsFilter("");
+        sut.onKeywordsFilter("", false, false);
         lista = sut.getCachedEvents();
         assertEquals(345, lista.size());
         assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", lista.get(0).getNombre());
         assertEquals("Visiones Urbanas con ArteSantander 2021", lista.get(344).getNombre());
 
         //UGIC.1c Lista Vacia
-        sut.onKeywordsFilter("PalabraRara");
+        sut.onKeywordsFilter("PalabraRara", false, false);
         lista = sut.getCachedEvents();
         assertEquals(0, lista.size());
 
