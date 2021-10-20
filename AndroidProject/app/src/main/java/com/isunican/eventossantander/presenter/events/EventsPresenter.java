@@ -1,22 +1,24 @@
 package com.isunican.eventossantander.presenter.events;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EventsPresenter implements IEventsContract.Presenter {
 
     private final IEventsContract.View view;
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
+
+    private Map<Event, String> eventToStringMap;
 
     public EventsPresenter(IEventsContract.View view) {
         this.view = view;
@@ -43,6 +45,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 view.onLoadSuccess(data.size(), showMessage);
                 cachedEvents = data;
                 copyAllEvents = data;
+                initEventToStringMap(copyAllEvents);
             }
 
             @Override
@@ -52,6 +55,13 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 copyAllEvents = null;
             }
         });
+    }
+
+    private void initEventToStringMap(List<Event> copyAllEvents) {
+        eventToStringMap = new HashMap<>();
+        for (Event e: copyAllEvents) {
+            eventToStringMap.put(e, e.toString().toLowerCase());
+        }
     }
 
     @Override
@@ -80,18 +90,27 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
-    public void onKeywordsFilter(String search) {
+    public void onKeywordsFilter(String search, boolean showMsg, boolean searchInCached) {
         List<Event> eventosFiltrados = new ArrayList<>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
         search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
-        for (Event e: copyAllEvents) {
-            if (e.toString().toLowerCase().contains(search.toLowerCase())) {
+        Pattern p = Pattern.compile(search, Pattern.CASE_INSENSITIVE);
+        Matcher m;
+        List<Event> eventList;
+        if (searchInCached) {
+            eventList = cachedEvents;
+        } else {
+            eventList = copyAllEvents;
+        }
+        for (Event e: eventList) {
+            m = p.matcher(eventToStringMap.get(e));
+            if (m.find()) {
                 eventosFiltrados.add(e);
             }
         }
         cachedEvents = eventosFiltrados;
         view.onEventsLoaded(eventosFiltrados);
-        view.onLoadSuccess(eventosFiltrados.size(), true);
+        view.onLoadSuccess(eventosFiltrados.size(), showMsg);
     }
     /**
      * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
