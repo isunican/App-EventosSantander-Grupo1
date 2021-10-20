@@ -11,6 +11,7 @@ import com.isunican.eventossantander.model.network.EventsAPIService;
 import com.isunican.eventossantander.view.Listener;
 
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +48,8 @@ public class EventsRepository {
      */
     private static final String RESOURCE = "RESOURCE";
     private static final CountingIdlingResource idlingResource = new CountingIdlingResource(RESOURCE);
+
+    private final static Phaser lock = new Phaser(1);
 
     public static void getEvents(Listener<List<Event>> listener) {
         // signal Espresso that Retrofit has started execution. Espresso will wait until the
@@ -99,12 +102,18 @@ public class EventsRepository {
 
     private static void incrementIdlingResource() {
         idlingResource.increment();
+        lock.register();
     }
 
     private static void decrementIdlingResource() {
         if (!idlingResource.isIdleNow()) {
             idlingResource.decrement();
         }
+        lock.arriveAndDeregister();
+    }
+
+    public static Phaser getLock(){
+        return lock;
     }
 
 }

@@ -21,6 +21,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -35,6 +36,8 @@ public class EventsPresenterITest {
     @Mock
     private static IEventsContract.View mockView;
 
+    private static Phaser lock = EventsRepository.getLock();
+
     /**
      * Load known events json
      * https://personales.unican.es/rivasjm/resources/agenda_cultural.json
@@ -45,6 +48,7 @@ public class EventsPresenterITest {
         mockView = mock(IEventsContract.View.class);
         when(mockView.hasInternetConnection()).thenReturn(false);
         sut = new EventsPresenter(mockView);
+        lock.arriveAndAwaitAdvance();
     }
 
     @Test
@@ -56,26 +60,23 @@ public class EventsPresenterITest {
         // IGIC.1a No hay conexion con el repositorio
         when(mockView.hasInternetConnection()).thenReturn(false);
         sut.loadData(true);
-        assertEquals(sut.getCachedEvents(), null);
+        assertEquals(null, sut.getCachedEvents());
 
         // IGIC.1b Hay conexion con el repositorio
         when(mockView.hasInternetConnection()).thenReturn(true);
         sut.loadData(true);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Espera para asegurar que se obtiene la lista de eventos del repositorio
+        lock.arriveAndAwaitAdvance();
         lista = sut.getCachedEvents();
-        assertEquals(lista.size(), 345);
-        assertEquals(lista.get(0).getNombre(), "Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea");
-        assertEquals(lista.get(344).getNombre(), "Visiones Urbanas con ArteSantander 2021");
+        assertEquals(345, lista.size());
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", lista.get(0).getNombre());
+        assertEquals("Visiones Urbanas con ArteSantander 2021", lista.get(344).getNombre());
 
         // IGIC.1c No hay conexion con el repositorio al intentar recargar
         sut.loadData(true);
-        assertEquals(lista.size(), 345);
-        assertEquals(lista.get(0).getNombre(), "Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea");
-        assertEquals(lista.get(344).getNombre(), "Visiones Urbanas con ArteSantander 2021");
+        assertEquals(345, lista.size());
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", lista.get(0).getNombre());
+        assertEquals("Visiones Urbanas con ArteSantander 2021", lista.get(344).getNombre());
 
         // Se verifica que se realiza la llamada a los metodos correspondientes cuando falla el
         // repositorio y cuando funciona bien
