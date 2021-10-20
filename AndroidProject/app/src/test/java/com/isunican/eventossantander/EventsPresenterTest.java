@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 import android.os.Build;
 
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -39,6 +40,8 @@ public class EventsPresenterTest {
     @Mock
     private static IEventsContract.View mockView;
 
+    private static Phaser lock = EventsRepository.getLock();
+
     /**
      * Load known events json
      * https://personales.unican.es/rivasjm/resources/agenda_cultural.json
@@ -50,6 +53,7 @@ public class EventsPresenterTest {
         mockView = mock(IEventsContract.View.class);
         when(mockView.hasInternetConnection()).thenReturn(true);
         sut = new EventsPresenter(mockView);
+        lock.arriveAndAwaitAdvance();
     }
 
     /**
@@ -58,12 +62,6 @@ public class EventsPresenterTest {
      */
     @Test
     public void onKeywordsFilterTest() {
-        // Espera para asegurar que se obtiene correctamente el OpenData
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         // Lista de Eventos
         List<Event> lista;
@@ -71,21 +69,21 @@ public class EventsPresenterTest {
         // UGIC.1a Lista con 4 Coincidencias
         sut.onKeywordsFilter("Palacio de Festivales");
         lista = sut.getCachedEvents();
-        assertEquals(lista.size(), 5);
-        assertEquals(lista.get(0).getNombre(), "\"Entre nosotras\". Concierto");
-        assertEquals(lista.get(4).getNombre(), "V Semana Internacional de Cine ");
+        assertEquals(5, lista.size());
+        assertEquals("\"Entre nosotras\". Concierto", lista.get(0).getNombre());
+        assertEquals("V Semana Internacional de Cine ", lista.get(4).getNombre());
 
         // UGIC.1b Lista Completa
         sut.onKeywordsFilter("");
         lista = sut.getCachedEvents();
-        assertEquals(lista.size(), 345);
-        assertEquals(lista.get(0).getNombre(), "Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea");
-        assertEquals(lista.get(344).getNombre(), "Visiones Urbanas con ArteSantander 2021");
+        assertEquals(345, lista.size());
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", lista.get(0).getNombre());
+        assertEquals("Visiones Urbanas con ArteSantander 2021", lista.get(344).getNombre());
 
         //UGIC.1c Lista Vacia
         sut.onKeywordsFilter("PalabraRara");
         lista = sut.getCachedEvents();
-        assertEquals(lista.size(), 0);
+        assertEquals(0, lista.size());
 
         // Se comprueba 4 veces ya que tambien se utiliza ese metodo en loadData de la creacion del sut
         verify(mockView, times(4)).onLoadSuccess(anyInt(), anyBoolean());

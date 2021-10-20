@@ -45,6 +45,13 @@ public class EventsActivityUITest {
     @BeforeClass
     public static void setUp() {
         EventsRepository.setLocalSource();
+        IdlingRegistry.getInstance().register(EventsRepository.getIdlingResource());
+    }
+
+    @AfterClass
+    public static void clean() {
+        EventsRepository.setOnlineSource();
+        IdlingRegistry.getInstance().unregister(EventsRepository.getIdlingResource());
     }
 
     /**
@@ -67,14 +74,6 @@ public class EventsActivityUITest {
      */
     @Test
     public void vistaListaEventoBusquedaKeywords(){
-
-        // Espera para asegurar que cargue la lista con los eventos del repositorio
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         // IVF.1a Lista con 5 coincidencias
         // Se introduce el texto con el metodo typeText ya que la busqueda se realiza al darle a enter
         onView(withId(R.id.et_PalabrasClave)).perform(typeText("Palacio de Festivales"),
