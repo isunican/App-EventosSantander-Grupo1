@@ -61,6 +61,7 @@ public class EventsPresenterITest {
         // IGIC.1b Hay conexion con el repositorio
         when(mockView.hasInternetConnection()).thenReturn(true);
         sut.loadData(true);
+        // Espera para asegurar que se obtiene la lista de eventos del repositorio
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

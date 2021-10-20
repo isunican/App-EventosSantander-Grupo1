@@ -42,6 +42,7 @@ public class EventsPresenterTest {
     /**
      * Load known events json
      * https://personales.unican.es/rivasjm/resources/agenda_cultural.json
+     * Creacion del mock de la vista y asignacion a la clase sut
      */
     @Before
     public void setUp() {
@@ -51,6 +52,10 @@ public class EventsPresenterTest {
         sut = new EventsPresenter(mockView);
     }
 
+    /**
+     * Test del metodo onKeyWordsFilter
+     * (Buscar por palabras clave)
+     */
     @Test
     public void onKeyWordsFilterTest() {
         // Espera para asegurar que se obtiene correctamente el OpenData
