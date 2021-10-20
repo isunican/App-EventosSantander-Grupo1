@@ -208,7 +208,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
             protected void onTextChange(boolean searchInCachedEvents) {
                 previousLength = inputSearch.getText().length();
-                if (previousLength % 2 == 0) {
+                if (previousLength % 4 == 0) {
                     presenter.onKeywordsFilter(inputSearch.getText().toString(), false, searchInCachedEvents);
                 }
                 inputSearch.setSelection(inputSearch.getText().length());
