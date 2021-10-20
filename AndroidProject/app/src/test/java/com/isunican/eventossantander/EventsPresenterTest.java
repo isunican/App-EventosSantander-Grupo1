@@ -57,7 +57,7 @@ public class EventsPresenterTest {
      * (Buscar por palabras clave)
      */
     @Test
-    public void onKeyWordsFilterTest() {
+    public void onKeywordsFilterTest() {
         // Espera para asegurar que se obtiene correctamente el OpenData
         try {
             Thread.sleep(5000);
