@@ -1,7 +1,5 @@
 package com.isunican.eventossantander.view.events;
 
-import android.content.Context;
-
 import com.isunican.eventossantander.model.Event;
 
 import java.util.List;
