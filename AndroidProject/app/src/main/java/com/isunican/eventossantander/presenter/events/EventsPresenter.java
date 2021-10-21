@@ -1,16 +1,20 @@
 package com.isunican.eventossantander.presenter.events;
 
+import android.annotation.SuppressLint;
+
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class EventsPresenter implements IEventsContract.Presenter {
 
@@ -89,25 +93,26 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.openInfoView();
     }
 
+    @SuppressLint("NewApi")
     @Override
-    public void onKeywordsFilter(String search, boolean showMsg, boolean searchInCached) {
+    public void onKeywordsFilter(final String search, boolean showMsg, boolean searchInCached) {
         List<Event> eventosFiltrados = new ArrayList<>();
-        search = Normalizer.normalize(search, Normalizer.Form.NFD);
-        search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
-        Pattern p = Pattern.compile(search, Pattern.CASE_INSENSITIVE);
-        Matcher m;
         List<Event> eventList;
         if (searchInCached) {
             eventList = cachedEvents;
         } else {
             eventList = copyAllEvents;
         }
+
+        Arrays.stream(search.split(" ")).anyMatch(item -> search.contains(item));
+
+        List<String> substrings = Arrays.asList(search.split(" "));
         for (Event e: eventList) {
-            m = p.matcher(eventToStringMap.get(e));
-            if (m.find()) {
+            if (substrings.stream().allMatch(substring -> eventToStringMap.get(e).contains(substring))) {
                 eventosFiltrados.add(e);
             }
         }
+
         cachedEvents = eventosFiltrados;
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), showMsg);
