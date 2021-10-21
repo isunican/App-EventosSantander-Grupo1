@@ -27,13 +27,11 @@ public class EventsAPIService {
     }
 
     public static EventsAPI getEventsServiceInstance(Source source) {
-        if (eventosService == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(source.getURL())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             eventosService = retrofit.create(EventsAPI.class);
-        }
         return eventosService;
     }
 }

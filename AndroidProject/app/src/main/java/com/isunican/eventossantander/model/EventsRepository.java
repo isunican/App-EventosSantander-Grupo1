@@ -11,12 +11,16 @@ import com.isunican.eventossantander.model.network.EventsAPIService;
 import com.isunican.eventossantander.view.Listener;
 
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EventsRepository {
+
+    // Constructor privado por defecto (Sonarlint)
+    private EventsRepository () {}
 
     /**
      * The data source URL can be modified. This is useful for tests.
@@ -42,8 +46,10 @@ public class EventsRepository {
     https://stackoverflow.com/questions/30733718/how-to-use-espresso-idling-resource-for-network-calls
     https://developer.android.com/training/testing/espresso/idling-resource
      */
-    private final static String RESOURCE = "RESOURCE";
-    private final static CountingIdlingResource idlingResource = new CountingIdlingResource(RESOURCE);
+    private static final String RESOURCE = "RESOURCE";
+    private static final CountingIdlingResource idlingResource = new CountingIdlingResource(RESOURCE);
+
+    private static final Phaser lock = new Phaser(1);
 
     public static void getEvents(Listener<List<Event>> listener) {
         // signal Espresso that Retrofit has started execution. Espresso will wait until the
@@ -96,12 +102,18 @@ public class EventsRepository {
 
     private static void incrementIdlingResource() {
         idlingResource.increment();
+        lock.register();
     }
 
     private static void decrementIdlingResource() {
         if (!idlingResource.isIdleNow()) {
             idlingResource.decrement();
         }
+        lock.arriveAndDeregister();
+    }
+
+    public static Phaser getLock(){
+        return lock;
     }
 
 }

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.isunican.eventossantander">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,10 +13,10 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.info.InfoActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.eventsdetail.EventsDetailActivity"
-            android:exported="true"
+            android:exported="false"
             android:parentActivityName=".view.events.EventsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

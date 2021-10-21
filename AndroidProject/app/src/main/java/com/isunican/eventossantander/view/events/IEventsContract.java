@@ -10,10 +10,13 @@ public interface IEventsContract {
 
         void onEventClicked(int eventIndex);
 
-        void onReloadClicked();
+        void onReloadClicked(boolean showMessage);
+
+        void onReloadCachedEventsClicked();
 
         void onInfoClicked();
 
+        void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
     }
 
     public interface View {
@@ -22,11 +25,16 @@ public interface IEventsContract {
 
         void onLoadError();
 
-        void onLoadSuccess(int elementsLoaded);
+        void onLoadSuccess(int elementsLoaded, boolean showMessage);
 
         void openEventDetails(Event event);
 
         void openInfoView();
 
+        void onInternetConnectionFailure();
+
+        boolean hasInternetConnection();
+
+        void onLoadingItems();
     }
 }
