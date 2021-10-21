@@ -9,13 +9,9 @@ import static androidx.test.espresso.action.ViewActions.*;
 import static com.isunican.eventossantander.androidTest.utils.Matchers.withListSize;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
 
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ListView;
 
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.matcher.RootMatchers;
@@ -23,11 +19,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.events.EventsActivity;
-import com.isunican.eventossantander.view.events.IEventsContract;
-
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -75,32 +66,60 @@ public class EventsActivityUITest {
     @Test
     public void vistaListaEventoBusquedaKeywords(){
 
-        String text = "Palacio de festivales";
+        String text1 = "Palacio de festivales";
         String text2 = "Palabrarara";
 
         // IVF.1a Lista con 5 coincidencias
-        // Se introduce el texto con el metodo typeText ya que la busqueda se realiza al darle a enter
-        writeTextOnView(R.id.et_PalabrasClave, text);
+        // Se introduce el texto poco a poco para comprobar la funcionalidad de busqueda automatica
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(0,4)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(28)));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("Programa Académico UIMP-2021")));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(27).onChildView(withId(R.id.item_event_title)).check(matches(withText("Huellas de Spy en Candina")));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(4,8)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(11)));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("Programa Académico UIMP-2021")));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(10).onChildView(withId(R.id.item_event_title)).check(matches(withText("V Semana Internacional de Cine ")));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(8,12)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(5)));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("\"Entre nosotras\". Concierto")));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(4).onChildView(withId(R.id.item_event_title)).check(matches(withText("V Semana Internacional de Cine ")));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(12,16)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(5)));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("\"Entre nosotras\". Concierto")));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(4).onChildView(withId(R.id.item_event_title)).check(matches(withText("V Semana Internacional de Cine ")));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(16,20)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(5)));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("\"Entre nosotras\". Concierto")));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(4).onChildView(withId(R.id.item_event_title)).check(matches(withText("V Semana Internacional de Cine ")));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(20,21)));
 
+        // Se presiona la tecla ENTER para hacer la busqueda con el string completo
         onView(withId(R.id.et_PalabrasClave)).perform(pressKey(KeyEvent.KEYCODE_ENTER), closeSoftKeyboard());
 
         //Se comprueba que salta el toast
         onView(withText("Cargados 5 eventos")).inRoot(RootMatchers.withDecorView(not(decorView))).check(matches(isDisplayed()));
-        // Se comprueba que el tamaño de la lista de eventos es 0
+        // Se comprueba que el tamaño de la lista de eventos es 5
         onView(withId(R.id.eventsListView)).check(matches(withListSize(5)));
-
+        // Se comprueban que los eventos son los correctos
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("\"Entre nosotras\". Concierto")));
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(4).onChildView(withId(R.id.item_event_title)).check(matches(withText("V Semana Internacional de Cine ")));
 
 
         //IVF.1b
-        // No se puede realizar ya que Espresso no soporta comprobar la conexion a internet
+        // No se puede realizar ya que Espresso no soporta cambios en la conexion a internet
 
 
         // IVF.1c Lista Vacia
+        // Se limpia el contenido de la busqueda anterior
         onView(withId(R.id.et_PalabrasClave)).perform(replaceText(""), closeSoftKeyboard());
-        // Se introduce el texto con el metodo typeText ya que la busqueda se realiza al darle a enter
-        writeTextOnView(R.id.et_PalabrasClave, text2);
+        // Se introduce el texto poco a poco para comprobar la funcionalidad de busqueda automatica
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text2.substring(0,4)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(28)));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("Programa Académico UIMP-2021")));
+        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(27).onChildView(withId(R.id.item_event_title)).check(matches(withText("Huellas de Spy en Candina")));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text2.substring(4,8)));
+        onView(withId(R.id.eventsListView)).check(matches(withListSize(0)));
+        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text2.substring(8,11)));
         onView(withId(R.id.et_PalabrasClave)).perform(pressKey(KeyEvent.KEYCODE_ENTER), closeSoftKeyboard());
 
         //Se comprueba que salta el toast
@@ -117,16 +136,4 @@ public class EventsActivityUITest {
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea")));
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(344).onChildView(withId(R.id.item_event_title)).check(matches(withText("Visiones Urbanas con ArteSantander 2021")));
     }
-
-    private void writeTextOnView(int id, String text){
-        for (int i=0; i<text.length(); i++) {
-            onView(withId(id)).perform(typeText(text.substring(i, i+1)));
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }

@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,9 +34,6 @@ import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class EventsActivity extends AppCompatActivity implements IEventsContract.View {
 
@@ -57,14 +53,6 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     @Override
     public void onEventsLoaded(List<Event> events) {
         EventArrayAdapter adapter;
-
-        if (!inputSearch.getText().toString().equals("")) {
-            String str = inputSearch.getText().toString();
-            inputSearch.setText("");
-            presenter.onKeywordsFilter(str, false, false);
-            inputSearch.setText(str);
-            return;
-        }
 
         adapter = new EventArrayAdapter(EventsActivity.this, 0, events);
         ListView listView = findViewById(R.id.eventsListView);
@@ -187,43 +175,17 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         });
 
         inputSearch.addTextChangedListener(new TextWatcher() {
-            private boolean editing = false;
-            private int previousLength = 0;
 
             @Override
-            public final void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public final void beforeTextChanged(CharSequence s, int start, int count, int after) { return;}
 
             @Override
             public final void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editing)
-                    return;
-
-                editing = true;
-                try {
-                    onTextChange(true);
-                } finally {
-                    editing = false;
-                }
-            }
-
-            protected void onTextChange(boolean searchInCachedEvents) {
-                previousLength = inputSearch.getText().length();
-                if (previousLength % 4 == 0) {
-                    presenter.onKeywordsFilter(inputSearch.getText().toString(), false, searchInCachedEvents);
-                }
-                inputSearch.setSelection(inputSearch.getText().length());
+                presenter.onKeywordsFilter(s.toString(), false, false);
             }
 
             @Override
-            public final void afterTextChanged(Editable s) {
-                if (s.length() == 0) {
-                    presenter.onReloadCachedEventsClicked();
-                    return;
-                }
-                if (previousLength > s.length()) { //back button pressed
-                    onTextChange(false);
-                }
-            }
+            public final void afterTextChanged(Editable s) { return; }
 
         });
         ActionBar actionBar = getSupportActionBar();
