@@ -80,7 +80,12 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         } else if (showMessage) {
             msgToast = Toast.makeText(this, String.format("Cargados %d eventos", elementsLoaded), Toast.LENGTH_SHORT);
         }
-        msgToast.show();
+        try {
+            msgToast.show();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
     }
 
     @Override

@@ -49,7 +49,7 @@ public class EventsRepository {
     private static final String RESOURCE = "RESOURCE";
     private static final CountingIdlingResource idlingResource = new CountingIdlingResource(RESOURCE);
 
-    private final static Phaser lock = new Phaser(1);
+    private static final Phaser lock = new Phaser(1);
 
     public static void getEvents(Listener<List<Event>> listener) {
         // signal Espresso that Retrofit has started execution. Espresso will wait until the
