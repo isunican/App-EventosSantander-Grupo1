@@ -90,6 +90,11 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
+    public void onFavouriteEventsClicked() {
+        view.openFavouriteEventsView();
+    }
+
+    @Override
     public void onKeywordsFilter(String search, boolean showMsg, boolean searchInCached) {
         List<Event> eventosFiltrados = new ArrayList<>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);

@@ -16,6 +16,8 @@ public interface IEventsContract {
 
         void onInfoClicked();
 
+        void onFavouriteEventsClicked();
+
         void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
     }
 
@@ -30,6 +32,8 @@ public interface IEventsContract {
         void openEventDetails(Event event);
 
         void openInfoView();
+
+        void openFavouriteEventsView();
 
         void onInternetConnectionFailure();
 
