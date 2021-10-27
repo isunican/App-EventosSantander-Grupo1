@@ -7,4 +7,13 @@
     <string name="mas_informacion">Más información</string>
     <string name="introduzca_las_palabras_clave">Introduzca las palabras clave</string>
     <string name="icono_de_lupa">Icono de lupa</string>
+    <string name="filtrar_por_categoria">Filtrar por categoria</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="limpiar">limpiar</string>
+    <string name="talleres">Talleres</string>
+    <string name="infantil">Infantil</string>
+    <string name="otros">Otros</string>
+    <string name="m_sica">Música</string>
+    <string name="artes_pl_sticas">Artes Plásticas</string>
+    <string name="artes_esc_nicas">Artes Escénicas</string>
 </resources>

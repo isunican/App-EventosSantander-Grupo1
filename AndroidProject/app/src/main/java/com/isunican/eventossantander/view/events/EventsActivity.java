@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
+import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
 
@@ -55,7 +56,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         EventArrayAdapter adapter;
 
         adapter = new EventArrayAdapter(EventsActivity.this, 0, events);
-        ListView listView = findViewById(R.id.eventsListView);
+        ListView listView = findViewById(R.id.categorysListView);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> presenter.onEventClicked(position));
@@ -98,6 +99,12 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         startActivity(intent);
     }
 
+    @Override
+    public void openCategoryFilterView() {
+        Intent intent = new Intent(this, CategoryFilterActivity.class);
+        startActivity(intent);
+    }
+
     public IEventsContract.Presenter getPresenter() {
         return presenter;
     }
@@ -125,6 +132,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
                 return true;
             case R.id.menu_info:
                 presenter.onInfoClicked();
+                return true;
+            case R.id.menu_filtrarCategoria:
+                presenter.onCategoryFilterClicked();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

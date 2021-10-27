@@ -72,7 +72,7 @@
                 android:id="@+id/event_detail_MasInfo"
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:text="@string/mas_informacion" />
         </LinearLayout>
     </ScrollView>

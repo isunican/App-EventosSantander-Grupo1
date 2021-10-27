@@ -112,6 +112,12 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), showMsg);
     }
+
+    @Override
+    public void onCategoryFilterClicked() {
+        view.openCategoryFilterView();
+    }
+
     /**
      * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
      */
