@@ -14,11 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
+import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
 import com.squareup.picasso.Picasso;
 
-public class EventsDetailActivity extends AppCompatActivity {
+public class EventsDetailActivity extends AppCompatActivity implements IEventsDetailContract.View{
 
     public static final String INTENT_EVENT = "INTENT_EVENT";
+
+    public IEventsDetailContract.Presenter presenter;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -61,6 +64,8 @@ public class EventsDetailActivity extends AppCompatActivity {
             startActivity(browserIntent);
         });
 
+        presenter = new EventsDetailPresenter(this);
+
     }
 
     // Para cerrar la activity
@@ -68,5 +73,10 @@ public class EventsDetailActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    @Override
+    public void onFavouriteEventsView() {
+        presenter.onFavouriteEventsClicked(getIntent().getExtras().getParcelable(INTENT_EVENT));
     }
 }
