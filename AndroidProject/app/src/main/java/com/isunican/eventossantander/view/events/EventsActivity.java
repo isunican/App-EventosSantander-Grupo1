@@ -218,4 +218,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             actionBar.setCustomView(customView);
         }
     }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
 }

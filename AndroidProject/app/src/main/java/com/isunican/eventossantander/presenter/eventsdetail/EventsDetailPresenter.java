@@ -30,7 +30,7 @@ public class EventsDetailPresenter implements IEventsDetailContract.Presenter {
     public EventsDetailPresenter(EventsDetailActivity view) {
         this.view = view;
         context = view.getApplicationContext();
-        sharedPref = context.getSharedPreferences("KEY_FAVORITOS", Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences(KEY_FAVORITOS, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         loadFavouriteFromLocal();
     }
