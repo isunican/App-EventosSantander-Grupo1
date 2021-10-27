@@ -1,7 +1,11 @@
 package com.isunican.eventossantander.presenter.events;
 
+import android.util.Log;
+import android.view.View;
+
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
+import com.isunican.eventossantander.utils.LocalEvents;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
@@ -34,6 +38,12 @@ public class EventsPresenter implements IEventsContract.Presenter {
     public void loadData(boolean showMessage) {
 
         if (!view.hasInternetConnection()) {
+            List<Event> evLocal = loadLocalData();
+            view.onEventsLoaded(evLocal);
+            view.onLoadSuccess(evLocal.size(), showMessage);
+            cachedEvents = evLocal;
+            copyAllEvents = evLocal;
+            initEventToStringMap(copyAllEvents);
             view.onInternetConnectionFailure();
             return;
         }
@@ -46,6 +56,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 cachedEvents = data;
                 copyAllEvents = data;
                 initEventToStringMap(copyAllEvents);
+                saveData(cachedEvents);
             }
 
             @Override
@@ -55,6 +66,14 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 copyAllEvents = null;
             }
         });
+    }
+
+    private List<Event> loadLocalData() {
+        return LocalEvents.loadDataFromLocal(view.getContext());
+    }
+
+    private void saveData(List<Event> cachedEvents) {
+        LocalEvents.saveDataToLocal(view.getContext(), cachedEvents);
     }
 
     private void initEventToStringMap(List<Event> copyAllEvents) {

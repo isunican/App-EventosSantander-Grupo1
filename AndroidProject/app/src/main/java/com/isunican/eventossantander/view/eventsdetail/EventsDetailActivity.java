@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.isunican.eventossantander.R;
@@ -29,6 +30,13 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_detail);
 
+        configItems();
+
+        presenter = new EventsDetailPresenter(this);
+
+    }
+
+    private void configItems() {
         ActionBar actBar = getSupportActionBar();
 
         actBar.setDisplayHomeAsUpEnabled(true); // Botón home en la barra superior
@@ -64,8 +72,21 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
             startActivity(browserIntent);
         });
 
-        presenter = new EventsDetailPresenter(this);
-
+        ImageButton ib = findViewById(R.id.event_detail_Favourite);
+        ib.setOnClickListener(new View.OnClickListener() {
+            boolean active = false;
+            @Override
+            public void onClick(View view) { // TODO: aplicar funcionalidad al botón, esto solo controla la imagen
+                // TODO: también hace falta que si está el evento guardado como favorito, al entrar en la activity la estrella esté rellena
+                if (active) {
+                    active = false;
+                    ib.setImageResource(R.drawable.estrella);
+                } else {
+                    active = true;
+                    ib.setImageResource(R.drawable.estrella_rellena);
+                }
+            }
+        });
     }
 
     // Para cerrar la activity
