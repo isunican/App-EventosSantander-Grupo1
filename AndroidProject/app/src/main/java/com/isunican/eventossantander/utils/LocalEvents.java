@@ -14,6 +14,7 @@ public class LocalEvents {
 
     private static final String KEY_LOCAL_EVENTS = "ALL_LOCAL_EVENTS";
     private static final String NUM_EVENTS = "NUM_EVENTS";
+    private static final String KEY_FAVOURITE_EVENTS = "ALL_FAVOURITE_EVENTS";
 
     private static final String[] eventsPartsNames = { "identificador",  "nombre", "nombreAlternativo", "categoria", "descripcion",
             "descripcionAlternativa", "fecha", "longitud", "latitud", "enlace", "enlaceAlternativo", "imagen"};
@@ -45,7 +46,6 @@ public class LocalEvents {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_LOCAL_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit(); // Borramos todos los datos locales
         editor.clear();
-        editor.apply();
         int counter = 0;
         for (Event e: events) {
             editor.putInt("evento" + counter + eventsPartsNames[0], e.getIdentificador());
@@ -66,32 +66,52 @@ public class LocalEvents {
         editor.apply();
     }
 
-    /*public static void saveDataToLocal (Context c, List<Event> events) {
-        SharedPreferences sharedPref = c.getSharedPreferences(KEY_LOCAL_EVENTS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit(); // Borramos todos los datos locales
-        editor.clear();
-        editor.apply();
-        int counter = 0;
-        Set<String> eventoStrings;
-        for (Event e: events) {
-            eventoStrings = new HashSet<>();
-            eventoStrings.add(String.valueOf(e.getIdentificador()));
-            eventoStrings.add(e.getNombre());
-            eventoStrings.add(e.getNombreAlternativo());
-            eventoStrings.add(e.getCategoria());
-            eventoStrings.add(e.getDescripcion());
-            eventoStrings.add(e.getDescripcionAlternativa());
-            eventoStrings.add(e.getFecha());
-            eventoStrings.add(String.valueOf(e.getLongitud()));
-            eventoStrings.add(String.valueOf(e.getLatitud()));
-            eventoStrings.add(e.getEnlace());
-            eventoStrings.add(e.getEnlaceAlternativo());
-            eventoStrings.add(e.getImagen());
-            editor.putStringSet("evento" + counter, eventoStrings);
-            counter++;
+    public static List<Integer> loadFavouritesId(Context c) {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
+        List<Integer> events = new ArrayList<>();
+        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
+        if (ids!=null) {
+            for (String id : ids) {
+                events.add(Integer.parseInt(id));
+            }
         }
-        editor.putInt(NUM_EVENTS, counter);
+        return events;
+    }
+
+    public static void newFavouriteEvent(Context c, int id) {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
+        if(ids == null){
+            ids = new HashSet<>();
+        }
+        editor.clear();
+        ids.add(String.valueOf(id));
+        editor.putStringSet(KEY_FAVOURITE_EVENTS, ids);
         editor.apply();
-    }*/
+    }
+
+    public static void deleteFavouriteEvent(Context c, int id) {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
+        ids.remove(String.valueOf(id));
+        editor.clear();
+        editor.putStringSet(KEY_FAVOURITE_EVENTS, ids);
+        editor.apply();
+    }
+
+    public static boolean checkFavouriteById(Context c, int id) {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
+        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
+        if (ids==null) {
+            return false;
+        }
+        if(ids.contains(String.valueOf(id))){
+            return true;
+        } else{
+            return false;
+        }
+    }
 
 }

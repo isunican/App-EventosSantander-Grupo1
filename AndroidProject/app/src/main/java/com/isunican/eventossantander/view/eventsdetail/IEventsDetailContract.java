@@ -8,7 +8,7 @@ public interface IEventsDetailContract {
 
     public interface Presenter {
 
-        void onFavouriteEventsClicked(Event event);
+        void onFavouriteEventsClicked(Event event, boolean eliminar);
     }
 
     public interface View {

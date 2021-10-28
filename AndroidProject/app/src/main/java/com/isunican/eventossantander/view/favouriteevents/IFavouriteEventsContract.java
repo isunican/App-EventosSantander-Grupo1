@@ -10,15 +10,10 @@ public interface IFavouriteEventsContract {
 
         void onEventClicked(int eventIndex);
 
-        void onReloadClicked(boolean showMessage);
+        void onLoadFavouriteEvents();
 
-        void onReloadCachedEventsClicked();
+        void onReloadFavourites();
 
-        void onInfoClicked();
-
-        void onFavouriteEventsClicked();
-
-        void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
     }
 
     public interface View {
@@ -27,18 +22,9 @@ public interface IFavouriteEventsContract {
 
         void onLoadError();
 
-        void onLoadSuccess(int elementsLoaded, boolean showMessage);
+        void onLoadSuccess(int elementsLoaded);
 
         void openEventDetails(Event event);
 
-        void openInfoView();
-
-        void openFavouriteEventsView();
-
-        void onInternetConnectionFailure();
-
-        boolean hasInternetConnection();
-
-        void onLoadingItems();
     }
 }

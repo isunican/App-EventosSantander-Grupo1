@@ -48,7 +48,6 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         presenter = new EventsPresenter(this);
     }
 

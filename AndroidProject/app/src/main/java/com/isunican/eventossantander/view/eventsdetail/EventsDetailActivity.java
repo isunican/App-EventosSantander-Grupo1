@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
+import com.isunican.eventossantander.utils.LocalEvents;
 import com.squareup.picasso.Picasso;
 
 public class EventsDetailActivity extends AppCompatActivity implements IEventsDetailContract.View{
@@ -23,6 +24,8 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
     public static final String INTENT_EVENT = "INTENT_EVENT";
 
     public IEventsDetailContract.Presenter presenter;
+
+
 
     @SuppressWarnings("deprecation")
     @Override
@@ -73,17 +76,22 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
         });
 
         ImageButton ib = findViewById(R.id.event_detail_Favourite);
+        boolean fav = LocalEvents.checkFavouriteById(getApplicationContext(), event.getIdentificador());
+        if (fav){
+            ib.setImageResource(R.drawable.estrella_rellena);
+        } else {
+            ib.setImageResource(R.drawable.estrella);
+        }
         ib.setOnClickListener(new View.OnClickListener() {
-            boolean active = false;
             @Override
-            public void onClick(View view) { // TODO: aplicar funcionalidad al botón, esto solo controla la imagen
-                // TODO: también hace falta que si está el evento guardado como favorito, al entrar en la activity la estrella esté rellena
-                if (active) {
-                    active = false;
+            public void onClick(View view) {
+                boolean fav2 = LocalEvents.checkFavouriteById(getApplicationContext(), event.getIdentificador());
+                if (fav2) {
                     ib.setImageResource(R.drawable.estrella);
+                    presenter.onFavouriteEventsClicked(event, true);
                 } else {
-                    active = true;
                     ib.setImageResource(R.drawable.estrella_rellena);
+                    presenter.onFavouriteEventsClicked(event, false);
                 }
             }
         });
@@ -98,6 +106,6 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
 
     @Override
     public void onFavouriteEventsView() {
-        presenter.onFavouriteEventsClicked(getIntent().getExtras().getParcelable(INTENT_EVENT));
+
     }
 }

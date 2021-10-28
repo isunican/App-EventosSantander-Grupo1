@@ -12,6 +12,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.isunican.eventossantander.utils.LocalEvents;
 
 public class Event implements Parcelable {
 
@@ -175,5 +176,4 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-
 }
