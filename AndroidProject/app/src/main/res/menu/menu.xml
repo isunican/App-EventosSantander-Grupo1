@@ -8,6 +8,9 @@
         android:title="@string/menu_reload"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menu_eventos_favoritos"
+        android:title="@string/eventos_favoritos" />
+    <item
         android:id="@+id/menu_info"
         android:title="@string/menu_info" />
 </menu>

@@ -10,15 +10,22 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
+import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
+import com.isunican.eventossantander.utils.LocalEvents;
 import com.squareup.picasso.Picasso;
 
-public class EventsDetailActivity extends AppCompatActivity {
+public class EventsDetailActivity extends AppCompatActivity implements IEventsDetailContract.View{
 
     public static final String INTENT_EVENT = "INTENT_EVENT";
+
+    public IEventsDetailContract.Presenter presenter;
+
+
 
     @SuppressWarnings("deprecation")
     @Override
@@ -26,6 +33,13 @@ public class EventsDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_detail);
 
+        configItems();
+
+        presenter = new EventsDetailPresenter(this);
+
+    }
+
+    private void configItems() {
         ActionBar actBar = getSupportActionBar();
 
         actBar.setDisplayHomeAsUpEnabled(true); // Botón home en la barra superior
@@ -61,6 +75,26 @@ public class EventsDetailActivity extends AppCompatActivity {
             startActivity(browserIntent);
         });
 
+        ImageButton ib = findViewById(R.id.event_detail_Favourite);
+        boolean fav = LocalEvents.checkFavouriteById(getApplicationContext(), event.getIdentificador());
+        if (fav){
+            ib.setImageResource(R.drawable.estrella_rellena);
+        } else {
+            ib.setImageResource(R.drawable.estrella);
+        }
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean fav2 = LocalEvents.checkFavouriteById(getApplicationContext(), event.getIdentificador());
+                if (fav2) {
+                    ib.setImageResource(R.drawable.estrella);
+                    presenter.onFavouriteEventsClicked(event, true);
+                } else {
+                    ib.setImageResource(R.drawable.estrella_rellena);
+                    presenter.onFavouriteEventsClicked(event, false);
+                }
+            }
+        });
     }
 
     // Para cerrar la activity
@@ -68,5 +102,10 @@ public class EventsDetailActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    @Override
+    public void onFavouriteEventsView() {
+
     }
 }

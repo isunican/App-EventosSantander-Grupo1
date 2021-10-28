@@ -68,11 +68,26 @@
                 tools:ignore="ImageContrastCheck"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <Button
-                android:id="@+id/event_detail_MasInfo"
+            <LinearLayout
+                android:id="@+id/LinearLayout02"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
-                android:layout_weight="1"
-                android:text="@string/mas_informacion" />
+                android:layout_alignParentBottom="true">
+                <Button
+                    android:id="@+id/event_detail_MasInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:layout_weight="1"
+                    android:text="@string/mas_informacion" />
+                <ImageButton
+                    android:id="@+id/event_detail_Favourite"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:layout_weight="1"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:src="@drawable/estrella" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>

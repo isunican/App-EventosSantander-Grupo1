@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -31,6 +32,7 @@ import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
+import com.isunican.eventossantander.view.favouriteevents.FavouriteEventsActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
 
 import java.util.List;
@@ -46,7 +48,6 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         presenter = new EventsPresenter(this);
     }
 
@@ -98,6 +99,12 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         startActivity(intent);
     }
 
+    @Override
+    public void openFavouriteEventsView() {
+        Intent intent = new Intent(this, FavouriteEventsActivity.class);
+        startActivity(intent);
+    }
+
     public IEventsContract.Presenter getPresenter() {
         return presenter;
     }
@@ -125,6 +132,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
                 return true;
             case R.id.menu_info:
                 presenter.onInfoClicked();
+                return true;
+            case R.id.menu_eventos_favoritos:
+                presenter.onFavouriteEventsClicked();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -190,6 +200,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             public final void afterTextChanged(Editable s) { return; }
 
         });
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false); // Desactiva el title por defecto
@@ -205,5 +216,10 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             // Aplicamos la vista personalizada
             actionBar.setCustomView(customView);
         }
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 }
