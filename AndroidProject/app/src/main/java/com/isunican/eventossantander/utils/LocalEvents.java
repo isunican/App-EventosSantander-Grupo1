@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.isunican.eventossantander.model.Event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,20 +25,7 @@ public class LocalEvents {
         int numEvents = sharedPref.getInt(NUM_EVENTS, 0);
         List<Event> events = new ArrayList<>();
         for (int i = 0; i < numEvents; i++) {
-            Event newEvent = new Event(sharedPref.getInt("evento" + i + eventsPartsNames[0], 0),
-                    sharedPref.getString("evento" + i + eventsPartsNames[1], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[2], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[3], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[4], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[5], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[6], null),
-                    Double.parseDouble(sharedPref.getString("evento" + i + eventsPartsNames[7], null)),
-                    Double.parseDouble(sharedPref.getString("evento" + i + eventsPartsNames[8], null)),
-                    sharedPref.getString("evento" + i + eventsPartsNames[9], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[10], null),
-                    sharedPref.getString("evento" + i + eventsPartsNames[11], null)
-            );
-            events.add(newEvent);
+            events.add(Event.fromJSON(sharedPref.getString("evento" + i, null)));
         }
         return events;
     }
@@ -48,18 +36,7 @@ public class LocalEvents {
         editor.clear();
         int counter = 0;
         for (Event e: events) {
-            editor.putInt("evento" + counter + eventsPartsNames[0], e.getIdentificador());
-            editor.putString("evento" + counter + eventsPartsNames[1], e.getNombre());
-            editor.putString("evento" + counter + eventsPartsNames[2], e.getNombreAlternativo());
-            editor.putString("evento" + counter + eventsPartsNames[3], e.getCategoria());
-            editor.putString("evento" + counter + eventsPartsNames[4], e.getDescripcion());
-            editor.putString("evento" + counter + eventsPartsNames[5], e.getDescripcionAlternativa());
-            editor.putString("evento" + counter + eventsPartsNames[6], e.getFecha());
-            editor.putString("evento" + counter + eventsPartsNames[7], String.valueOf(e.getLongitud()));
-            editor.putString("evento" + counter + eventsPartsNames[8], String.valueOf(e.getLatitud()));
-            editor.putString("evento" + counter + eventsPartsNames[9], e.getEnlace());
-            editor.putString("evento" + counter + eventsPartsNames[10], e.getEnlaceAlternativo());
-            editor.putString("evento" + counter + eventsPartsNames[11], e.getImagen());
+            editor.putString("evento" + counter, e.toJSON());
             counter++;
         }
         editor.putInt(NUM_EVENTS, counter);
@@ -69,49 +46,62 @@ public class LocalEvents {
     public static List<Integer> loadFavouritesId(Context c) {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
         List<Integer> events = new ArrayList<>();
-        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
-        if (ids!=null) {
+        String str = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
+        if (str!=null) {
+            String[] ids = str.split(";");
             for (String id : ids) {
-                events.add(Integer.parseInt(id));
+                if (!id.isEmpty()) {
+                    events.add(Integer.parseInt(id));
+                }
             }
         }
+        Collections.sort(events, Collections.reverseOrder());
         return events;
     }
 
     public static void newFavouriteEvent(Context c, int id) {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
+        String ids = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
         if(ids == null){
-            ids = new HashSet<>();
+            ids = "";
         }
         editor.clear();
-        ids.add(String.valueOf(id));
-        editor.putStringSet(KEY_FAVOURITE_EVENTS, ids);
+        ids += ";" + id;
+        editor.putString(KEY_FAVOURITE_EVENTS, ids);
         editor.apply();
     }
 
     public static void deleteFavouriteEvent(Context c, int id) {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
-        ids.remove(String.valueOf(id));
-        editor.clear();
-        editor.putStringSet(KEY_FAVOURITE_EVENTS, ids);
-        editor.apply();
+        String str = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
+        if (str != null) {
+            String[] ids = str.split(";");
+            String newStr = "";
+            for (String i: ids) {
+                if (!i.equals(String.valueOf(id)) && !i.isEmpty()) {
+                    newStr += ";" + i;
+                }
+            }
+            editor.clear();
+            editor.putString(KEY_FAVOURITE_EVENTS, newStr);
+            editor.apply();
+        }
     }
 
     public static boolean checkFavouriteById(Context c, int id) {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
-        Set<String> ids = sharedPref.getStringSet(KEY_FAVOURITE_EVENTS, null);
-        if (ids==null) {
-            return false;
+        String str = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
+        if (str!=null) {
+            String[] ids = str.split(";");
+            for (String i: ids) {
+                if (i.equals(String.valueOf(id))) {
+                    return true;
+                }
+            }
         }
-        if(ids.contains(String.valueOf(id))){
-            return true;
-        } else{
-            return false;
-        }
+        return false;
     }
 
 }
