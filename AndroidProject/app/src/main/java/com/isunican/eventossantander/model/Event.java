@@ -11,6 +11,7 @@ package com.isunican.eventossantander.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.isunican.eventossantander.utils.LocalEvents;
 
@@ -176,4 +177,14 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public String toJSON() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static Event fromJSON(String jsonString) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonString, Event.class);
+    }
 }

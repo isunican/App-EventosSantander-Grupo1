@@ -1,6 +1,7 @@
 package com.isunican.eventossantander.presenter.events;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 
@@ -50,7 +51,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
             copyAllEvents = evLocal;
             initEventToStringMap(copyAllEvents);
             view.onInternetConnectionFailure();
-            creaFavoritos();
+            //creaFavoritos();
             return;
         }
 
@@ -63,7 +64,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 copyAllEvents = data;
                 initEventToStringMap(copyAllEvents);
                 saveData(cachedEvents);
-                creaFavoritos();
+                //creaFavoritos();
             }
 
             @Override
