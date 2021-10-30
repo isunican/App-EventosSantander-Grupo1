@@ -106,6 +106,6 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
 
     @Override
     public void onFavouriteEventsView() {
-
+        //Metodo vacio
     }
 }

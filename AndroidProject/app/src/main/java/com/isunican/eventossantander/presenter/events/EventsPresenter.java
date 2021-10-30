@@ -1,9 +1,6 @@
 package com.isunican.eventossantander.presenter.events;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.View;
 
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
@@ -15,7 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +49,6 @@ public class EventsPresenter implements IEventsContract.Presenter {
             copyAllEvents = evLocal;
             initEventToStringMap(copyAllEvents);
             view.onInternetConnectionFailure();
-            //creaFavoritos();
             return;
         }
 
@@ -64,7 +61,6 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 copyAllEvents = data;
                 initEventToStringMap(copyAllEvents);
                 saveData(cachedEvents);
-                //creaFavoritos();
             }
 
             @Override
@@ -153,16 +149,4 @@ public class EventsPresenter implements IEventsContract.Presenter {
         return cachedEvents;
     }
 
-    /**
-     * Metodo para crear los favoritos al inicio de la app
-     */
-    private void creaFavoritos() {
-        List<Integer> idsFavoritos = LocalEvents.loadFavouritesId(context);
-        for (Integer id: idsFavoritos) {
-            if(eventsByIdMap.containsKey(id)){
-                Event e = eventsByIdMap.get(id);
-                LocalEvents.newFavouriteEvent(context, e.getIdentificador());
-            }
-        }
-    }
 }

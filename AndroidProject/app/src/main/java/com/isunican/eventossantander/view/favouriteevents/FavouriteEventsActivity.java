@@ -6,16 +6,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.presenter.events.EventsPresenter;
 import com.isunican.eventossantander.presenter.favouriteevents.FavouriteEventsPresenter;
-import com.isunican.eventossantander.view.events.EventArrayAdapter;
-import com.isunican.eventossantander.view.events.EventsActivity;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 
 import java.util.List;
