@@ -1,9 +1,7 @@
 package com.isunican.eventossantander.presenter.favouriteevents;
 
-import android.content.Context;
-
 import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.utils.LocalEvents;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.favouriteevents.FavouriteEventsActivity;
 import com.isunican.eventossantander.view.favouriteevents.IFavouriteEventsContract;
 import java.util.ArrayList;
@@ -16,19 +14,19 @@ public class FavouriteEventsPresenter implements IFavouriteEventsContract.Presen
     private List<Event> favouriteEvents;
     private IFavouriteEventsContract.View view;
 
-    private Context context;
+    private ISharedPrefs sharedPrefs;
 
-    public FavouriteEventsPresenter(FavouriteEventsActivity view) {
+    public FavouriteEventsPresenter(FavouriteEventsActivity view, ISharedPrefs sharedPrefs) {
         this.view = view;
-        context = view.getApplicationContext();
+        this.sharedPrefs = sharedPrefs;
         onLoadFavouriteEvents();
     }
 
     @Override
     public void onLoadFavouriteEvents() {
 
-        Map<Integer, Event> totalEvents = createMapFromList(LocalEvents.loadDataFromLocal(context));
-        List<Integer> idsFav = LocalEvents.loadFavouritesId(context);
+        Map<Integer, Event> totalEvents = createMapFromList(sharedPrefs.loadDataFromLocal());
+        List<Integer> idsFav = sharedPrefs.loadFavouritesId();
 
         favouriteEvents = new ArrayList<>();
 

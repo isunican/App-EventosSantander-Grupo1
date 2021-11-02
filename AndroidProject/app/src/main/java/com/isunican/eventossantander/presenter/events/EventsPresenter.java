@@ -1,10 +1,12 @@
 package com.isunican.eventossantander.presenter.events;
-
-
 import android.content.Context;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.utils.LocalEvents;
+
+import com.isunican.eventossantander.model.Event;
+import com.isunican.eventossantander.model.EventsRepository;
+
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,10 +27,10 @@ public class EventsPresenter implements IEventsContract.Presenter {
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
 
+    private ISharedPrefs sharedPrefs;
+
     private Map<Event, String> eventToStringMap;
     private Map<Integer, Event> eventsByIdMap;
-
-    private ISharedPrefs sharedPrefs;
 
     public EventsPresenter(IEventsContract.View view, ISharedPrefs sharedPrefs) {
         this.view = view;
@@ -52,7 +56,6 @@ public class EventsPresenter implements IEventsContract.Presenter {
             copyAllEvents = evLocal;
             initEventToStringMap(copyAllEvents);
             view.onInternetConnectionFailure();
-            //creaFavoritos();
             return;
         }
 
@@ -65,7 +68,6 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 copyAllEvents = data;
                 initEventToStringMap(copyAllEvents);
                 saveData(cachedEvents);
-                //creaFavoritos();
             }
 
             @Override
@@ -78,11 +80,11 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     private List<Event> loadLocalData() {
-        return LocalEvents.loadDataFromLocal(view.getContext());
+        return sharedPrefs.loadDataFromLocal();
     }
 
     private void saveData(List<Event> cachedEvents) {
-        LocalEvents.saveDataToLocal(view.getContext(), cachedEvents);
+        sharedPrefs.saveDataToLocal(cachedEvents);
     }
 
     private void initEventToStringMap(List<Event> copyAllEvents) {
@@ -181,11 +183,12 @@ public class EventsPresenter implements IEventsContract.Presenter {
         return cachedEvents;
     }
 
+
     /**
      * Metodo para crear los favoritos al inicio de la app
      */
     private void creaFavoritos() {
-        List<Integer> idsFavoritos = LocalEvents.loadFavouritesId(context);
+        List<Integer> idsFavoritos = sharedPrefs.loadFavouritesId();
         for (Integer id: idsFavoritos) {
             if(eventsByIdMap.containsKey(id)){
                 Event e = eventsByIdMap.get(id);
@@ -193,4 +196,5 @@ public class EventsPresenter implements IEventsContract.Presenter {
             }
         }
     }
+
 }

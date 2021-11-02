@@ -7,18 +7,13 @@ import com.isunican.eventossantander.model.Event;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class LocalEvents {
 
     private static final String KEY_LOCAL_EVENTS = "ALL_LOCAL_EVENTS";
     private static final String NUM_EVENTS = "NUM_EVENTS";
     private static final String KEY_FAVOURITE_EVENTS = "ALL_FAVOURITE_EVENTS";
-
-    private static final String[] eventsPartsNames = { "identificador",  "nombre", "nombreAlternativo", "categoria", "descripcion",
-            "descripcionAlternativa", "fecha", "longitud", "latitud", "enlace", "enlaceAlternativo", "imagen"};
 
     public static List<Event> loadDataFromLocal (Context c) {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_LOCAL_EVENTS, Context.MODE_PRIVATE);

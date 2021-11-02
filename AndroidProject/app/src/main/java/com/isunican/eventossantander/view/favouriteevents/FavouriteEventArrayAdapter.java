@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.view.events.EventsActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
