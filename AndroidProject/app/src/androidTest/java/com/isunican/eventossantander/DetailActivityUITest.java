@@ -8,8 +8,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 
-import android.os.SystemClock;
-
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
@@ -48,7 +46,7 @@ public class DetailActivityUITest {
     public void vistaDetalladaEvento(){
         // Open detail view of first event
 //        SystemClock.sleep(20000);
-        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.categorysListView)).atPosition(0).perform(click());
 
         // Check if data matches
  //       onView(withId(R.id.event_detail_title)).check(matches(withText("Centro de Arte Faro  Cabo Mayor")));

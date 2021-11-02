@@ -1,13 +1,11 @@
 package com.isunican.eventossantander.presenter.events;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.View;
 
+import android.content.Context;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.utils.LocalEvents;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
@@ -22,16 +20,17 @@ import java.util.regex.Pattern;
 public class EventsPresenter implements IEventsContract.Presenter {
 
     private final IEventsContract.View view;
-    private final Context context;
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
 
     private Map<Event, String> eventToStringMap;
     private Map<Integer, Event> eventsByIdMap;
 
-    public EventsPresenter(IEventsContract.View view) {
+    private ISharedPrefs sharedPrefs;
+
+    public EventsPresenter(IEventsContract.View view, ISharedPrefs sharedPrefs) {
         this.view = view;
-        context = view.getContext();
+        this.sharedPrefs = sharedPrefs;
         configItems();
         loadData(true);
     }
@@ -42,6 +41,8 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     //Tiene que ser publico por los test. No cambiar a private aunque lo diga el sonar
     public void loadData(boolean showMessage) {
+
+        sharedPrefs.clearCategories();
 
         if (!view.hasInternetConnection()) {
             List<Event> evLocal = loadLocalData();
@@ -146,6 +147,33 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), showMsg);
     }
+
+    @Override
+    public void onCategoryFilter() {
+        Set<String> categorias = sharedPrefs.getSelectedCategories();
+        List<Event> eventosFiltrados = new ArrayList<>();
+        List<Event> eventList;
+        eventList = copyAllEvents;
+        if (categorias.size() != 0) {
+            for (String s : categorias) {
+                for (Event e : eventList) {
+                    if (e.getCategoria().equals(s)) eventosFiltrados.add(e);
+                }
+            }
+            cachedEvents = eventosFiltrados;
+        } else{
+            eventosFiltrados = eventList;
+            cachedEvents = copyAllEvents;
+        }
+        view.onEventsLoaded(eventosFiltrados);
+        view.onLoadSuccess(eventosFiltrados.size(), true);
+    }
+
+    @Override
+    public void onCategoryFilterClicked() {
+        view.openCategoryFilterView();
+    }
+
     /**
      * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
      */
@@ -161,7 +189,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
         for (Integer id: idsFavoritos) {
             if(eventsByIdMap.containsKey(id)){
                 Event e = eventsByIdMap.get(id);
-                LocalEvents.newFavouriteEvent(context, e.getIdentificador());
+                sharedPrefs.newFavouriteEvent(e.getIdentificador());
             }
         }
     }

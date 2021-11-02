@@ -35,7 +35,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/eventsListView"
+        android:id="@+id/categorysListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

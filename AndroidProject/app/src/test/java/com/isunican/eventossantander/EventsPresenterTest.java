@@ -8,6 +8,7 @@ import androidx.test.espresso.IdlingRegistry;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.events.IEventsContract;
 
 import org.junit.AfterClass;
@@ -39,6 +40,7 @@ public class EventsPresenterTest {
     private static EventsPresenter sut;
     @Mock
     private static IEventsContract.View mockView;
+    private static ISharedPrefs mockSharedPrefs;
 
     private static Phaser lock = EventsRepository.getLock();
 
@@ -51,8 +53,9 @@ public class EventsPresenterTest {
     public void setUp() {
         EventsRepository.setLocalSource();
         mockView = mock(IEventsContract.View.class);
+        mockSharedPrefs = mock(ISharedPrefs.class);
         when(mockView.hasInternetConnection()).thenReturn(true);
-        sut = new EventsPresenter(mockView);
+        sut = new EventsPresenter(mockView, mockSharedPrefs);
         lock.arriveAndAwaitAdvance();
     }
 

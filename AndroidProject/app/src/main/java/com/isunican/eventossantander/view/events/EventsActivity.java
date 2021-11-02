@@ -1,13 +1,19 @@
 package com.isunican.eventossantander.view.events;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -31,6 +37,9 @@ import android.widget.Toast;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
+import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.utils.ISharedPrefs;
+import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 import com.isunican.eventossantander.view.favouriteevents.FavouriteEventsActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
@@ -44,11 +53,22 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
     private Toast msgToast;
 
+    private boolean firstUse = true;
+    ISharedPrefs sharedPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter = new EventsPresenter(this);
+        sharedPrefs = new AccessSharedPrefs(getApplicationContext());
+        presenter = new EventsPresenter(this, sharedPrefs);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!firstUse) presenter.onCategoryFilter();
+        firstUse = false;
     }
 
     @Override
@@ -56,7 +76,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         EventArrayAdapter adapter;
 
         adapter = new EventArrayAdapter(EventsActivity.this, 0, events);
-        ListView listView = findViewById(R.id.eventsListView);
+        ListView listView = findViewById(R.id.categorysListView);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> presenter.onEventClicked(position));
@@ -100,8 +120,14 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     }
 
     @Override
+
     public void openFavouriteEventsView() {
         Intent intent = new Intent(this, FavouriteEventsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openCategoryFilterView() {
+        Intent intent = new Intent(this, CategoryFilterActivity.class);
         startActivity(intent);
     }
 
@@ -133,8 +159,13 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             case R.id.menu_info:
                 presenter.onInfoClicked();
                 return true;
+
             case R.id.menu_eventos_favoritos:
                 presenter.onFavouriteEventsClicked();
+                return true;
+
+            case R.id.menu_filtrarCategoria:
+                presenter.onCategoryFilterClicked();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

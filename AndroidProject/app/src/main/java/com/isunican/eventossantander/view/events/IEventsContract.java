@@ -20,7 +20,11 @@ public interface IEventsContract {
 
         void onFavouriteEventsClicked();
 
+        void onCategoryFilterClicked();
+
         void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
+
+        void onCategoryFilter();
     }
 
     public interface View {
@@ -36,6 +40,8 @@ public interface IEventsContract {
         void openInfoView();
 
         void openFavouriteEventsView();
+
+        void openCategoryFilterView();
 
         void onInternetConnectionFailure();
 
