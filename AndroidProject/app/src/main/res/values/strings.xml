@@ -9,11 +9,11 @@
     <string name="icono_de_lupa">Icono de lupa</string>
     <string name="filtrar_por_categoria">Filtrar por categoria</string>
     <string name="aplicar">Aplicar</string>
-    <string name="limpiar">limpiar</string>
-    <string name="talleres">Talleres</string>
+    <string name="limpiar">Limpiar</string>
+    <string name="talleres">Formación/Talleres</string>
     <string name="infantil">Infantil</string>
     <string name="otros">Otros</string>
-    <string name="m_sica">Música</string>
-    <string name="artes_pl_sticas">Artes Plásticas</string>
-    <string name="artes_esc_nicas">Artes Escénicas</string>
+    <string name="musica">Música</string>
+    <string name="artes_plasticas">Artes Plásticas</string>
+    <string name="artes_escenicas">Artes Escénicas</string>
 </resources>

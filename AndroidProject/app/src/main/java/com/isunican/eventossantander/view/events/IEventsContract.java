@@ -16,9 +16,11 @@ public interface IEventsContract {
 
         void onInfoClicked();
 
+        void onCategoryFilterClicked();
+
         void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
 
-        void onCategoryFilterClicked();
+        void onCategoryFilter();
     }
 
     public interface View {

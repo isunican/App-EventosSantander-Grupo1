@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:contentDescription="@string/artes_esc_nicas"
+            android:contentDescription="@string/artes_escenicas"
             app:srcCompat="@drawable/artesescenicas" />
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/artes_esc_nicas"
+            android:text="@string/artes_escenicas"
             android:textSize="20sp" />
 
         <CheckBox
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:contentDescription="@string/artes_pl_sticas"
+            android:contentDescription="@string/artes_plasticas"
             app:srcCompat="@drawable/artesplasticas" />
 
         <TextView
@@ -57,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/artes_pl_sticas"
+            android:text="@string/artes_plasticas"
             android:textSize="20sp" />
 
         <CheckBox
@@ -139,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:contentDescription="@string/m_sica"
+            android:contentDescription="@string/musica"
             app:srcCompat="@drawable/musica" />
 
         <TextView
@@ -147,7 +147,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/m_sica"
+            android:text="@string/musica"
             android:textSize="20sp" />
 
         <CheckBox

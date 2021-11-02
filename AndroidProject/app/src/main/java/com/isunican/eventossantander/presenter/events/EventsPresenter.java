@@ -1,7 +1,10 @@
 package com.isunican.eventossantander.presenter.events;
 
+import android.util.Log;
+
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
@@ -9,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +24,11 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     private Map<Event, String> eventToStringMap;
 
-    public EventsPresenter(IEventsContract.View view) {
+    private ISharedPrefs sharedPrefs;
+
+    public EventsPresenter(IEventsContract.View view, ISharedPrefs sharedPrefs) {
         this.view = view;
+        this.sharedPrefs = sharedPrefs;
         configItems();
         loadData(true);
     }
@@ -32,6 +39,8 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     //Tiene que ser publico por los test. No cambiar a private aunque lo diga el sonar
     public void loadData(boolean showMessage) {
+
+        sharedPrefs.clearCategories();
 
         if (!view.hasInternetConnection()) {
             view.onInternetConnectionFailure();
@@ -111,6 +120,27 @@ public class EventsPresenter implements IEventsContract.Presenter {
         cachedEvents = eventosFiltrados;
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), showMsg);
+    }
+
+    @Override
+    public void onCategoryFilter() {
+        Set<String> categorias = sharedPrefs.getSelectedCategories();
+        List<Event> eventosFiltrados = new ArrayList<>();
+        List<Event> eventList;
+        eventList = copyAllEvents;
+        if (categorias.size() != 0) {
+            for (String s : categorias) {
+                for (Event e : eventList) {
+                    if (e.getCategoria().equals(s)) eventosFiltrados.add(e);
+                }
+            }
+            cachedEvents = eventosFiltrados;
+        } else{
+            eventosFiltrados = eventList;
+            cachedEvents = copyAllEvents;
+        }
+        view.onEventsLoaded(eventosFiltrados);
+        view.onLoadSuccess(eventosFiltrados.size(), true);
     }
 
     @Override
