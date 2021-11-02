@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.favouriteevents.FavouriteEventsPresenter;
+import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 
 import java.util.List;
@@ -24,7 +26,8 @@ public class FavouriteEventsActivity extends AppCompatActivity implements IFavou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_events);
-        presenter = new FavouriteEventsPresenter(this);
+        ISharedPrefs sharedPrefs = new AccessSharedPrefs(getApplicationContext());
+        presenter = new FavouriteEventsPresenter(this, sharedPrefs);
         configItems();
     }
 

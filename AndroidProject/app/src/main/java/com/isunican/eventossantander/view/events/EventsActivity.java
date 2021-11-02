@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
+import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 import com.isunican.eventossantander.view.favouriteevents.FavouriteEventsActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
@@ -47,7 +50,8 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter = new EventsPresenter(this);
+        ISharedPrefs sharedPrefs = new AccessSharedPrefs(getApplicationContext());
+        presenter = new EventsPresenter(this, sharedPrefs);
     }
 
     @Override

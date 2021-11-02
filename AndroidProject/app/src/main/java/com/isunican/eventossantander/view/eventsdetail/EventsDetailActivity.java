@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
+import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.utils.LocalEvents;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +26,7 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
     public static final String INTENT_EVENT = "INTENT_EVENT";
 
     public IEventsDetailContract.Presenter presenter;
-
+    private ISharedPrefs sharedPrefs;
 
 
     @SuppressWarnings("deprecation")
@@ -32,10 +34,9 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_detail);
-
+        sharedPrefs = new AccessSharedPrefs(getApplicationContext());
+        presenter = new EventsDetailPresenter(this, sharedPrefs);
         configItems();
-
-        presenter = new EventsDetailPresenter(this);
 
     }
 
@@ -76,7 +77,7 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
         });
 
         ImageButton ib = findViewById(R.id.event_detail_Favourite);
-        boolean fav = LocalEvents.checkFavouriteById(getApplicationContext(), event.getIdentificador());
+        boolean fav = sharedPrefs.checkFavouriteById(event.getIdentificador());
         if (fav){
             ib.setImageResource(R.drawable.estrella_rellena);
         } else {
@@ -85,7 +86,7 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean fav2 = LocalEvents.checkFavouriteById(getApplicationContext(), event.getIdentificador());
+                boolean fav2 = sharedPrefs.checkFavouriteById(event.getIdentificador());
                 if (fav2) {
                     ib.setImageResource(R.drawable.estrella);
                     presenter.onFavouriteEventsClicked(event, true);

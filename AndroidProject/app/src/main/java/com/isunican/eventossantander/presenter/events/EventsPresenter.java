@@ -1,10 +1,8 @@
 package com.isunican.eventossantander.presenter.events;
 
-import android.content.Context;
-
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
-import com.isunican.eventossantander.utils.LocalEvents;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
@@ -20,17 +18,18 @@ import java.util.regex.Pattern;
 public class EventsPresenter implements IEventsContract.Presenter {
 
     private final IEventsContract.View view;
-    private final Context context;
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
+
+    private ISharedPrefs sharedPrefs;
 
     private Map<Event, String> eventToStringMap;
     private Map<Integer, Event> eventsByIdMap;
 
-    public EventsPresenter(IEventsContract.View view) {
+    public EventsPresenter(IEventsContract.View view, ISharedPrefs sharedPrefs) {
         this.view = view;
-        context = view.getContext();
         configItems();
+        this.sharedPrefs = sharedPrefs;
         loadData(true);
     }
 
@@ -73,11 +72,11 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     private List<Event> loadLocalData() {
-        return LocalEvents.loadDataFromLocal(view.getContext());
+        return sharedPrefs.loadDataFromLocal();
     }
 
     private void saveData(List<Event> cachedEvents) {
-        LocalEvents.saveDataToLocal(view.getContext(), cachedEvents);
+        sharedPrefs.saveDataToLocal(cachedEvents);
     }
 
     private void initEventToStringMap(List<Event> copyAllEvents) {
