@@ -128,10 +128,18 @@ public class EventsPresenter implements IEventsContract.Presenter {
         List<Event> eventosFiltrados = new ArrayList<>();
         List<Event> eventList;
         eventList = copyAllEvents;
-        if (categorias != null && categorias.size()!=0) {
+        String categoriaI;
+        String eventoI;
+        if (categorias != null && !categorias.isEmpty()) {
             for (String s : categorias) {
+                categoriaI = Normalizer.normalize(s, Normalizer.Form.NFD);
+                categoriaI = categoriaI.replaceAll("[^\\p{ASCII}]", "");
+                categoriaI = categoriaI.toLowerCase();
                 for (Event e : eventList) {
-                    if (e.getCategoria().equals(s)) eventosFiltrados.add(e);
+                    eventoI = Normalizer.normalize(e.getCategoria(), Normalizer.Form.NFD);
+                    eventoI = eventoI.replaceAll("[^\\p{ASCII}]", "");
+                    eventoI = eventoI.toLowerCase();
+                    if (categoriaI.equals(eventoI)) eventosFiltrados.add(e);
                 }
             }
             cachedEvents = eventosFiltrados;
