@@ -24,9 +24,8 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
 
     public static final String INTENT_EVENT = "INTENT_EVENT";
 
-    public IEventsDetailContract.Presenter presenter;
+    private IEventsDetailContract.Presenter presenter;
     private ISharedPrefs sharedPrefs;
-
 
     @SuppressWarnings("deprecation")
     @Override
