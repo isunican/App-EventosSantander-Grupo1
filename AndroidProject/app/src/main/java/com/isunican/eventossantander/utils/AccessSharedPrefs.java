@@ -86,7 +86,7 @@ public class AccessSharedPrefs implements ISharedPrefs{
                 }
             }
         }
-        Collections.sort(events, Collections.reverseOrder());
+        Collections.reverse(events);
         return events;
     }
 

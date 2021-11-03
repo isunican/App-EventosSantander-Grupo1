@@ -12,6 +12,5 @@ public interface IEventsDetailContract {
 
     public interface View {
 
-        void onFavouriteEventsView();
     }
 }
