@@ -18,7 +18,6 @@ import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
 import com.isunican.eventossantander.utils.AccessSharedPrefs;
 import com.isunican.eventossantander.utils.ISharedPrefs;
-import com.isunican.eventossantander.utils.LocalEvents;
 import com.squareup.picasso.Picasso;
 
 public class EventsDetailActivity extends AppCompatActivity implements IEventsDetailContract.View{
@@ -83,17 +82,14 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
         } else {
             ib.setImageResource(R.drawable.estrella);
         }
-        ib.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean fav2 = sharedPrefs.checkFavouriteById(event.getIdentificador());
-                if (fav2) {
-                    ib.setImageResource(R.drawable.estrella);
-                    presenter.onFavouriteEventsClicked(event, true);
-                } else {
-                    ib.setImageResource(R.drawable.estrella_rellena);
-                    presenter.onFavouriteEventsClicked(event, false);
-                }
+        ib.setOnClickListener(view -> {
+            boolean fav2 = sharedPrefs.checkFavouriteById(event.getIdentificador());
+            if (fav2) {
+                ib.setImageResource(R.drawable.estrella);
+                presenter.onFavouriteEventsClicked(event, true);
+            } else {
+                ib.setImageResource(R.drawable.estrella_rellena);
+                presenter.onFavouriteEventsClicked(event, false);
             }
         });
     }

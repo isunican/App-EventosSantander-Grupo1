@@ -111,14 +111,14 @@ public class AccessSharedPrefs implements ISharedPrefs{
         String str = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
         if (str != null) {
             String[] ids = str.split(";");
-            String newStr = "";
+            StringBuilder newStr = new StringBuilder();
             for (String i: ids) {
                 if (!i.equals(String.valueOf(id)) && !i.isEmpty()) {
-                    newStr += ";" + i;
+                    newStr.append(";").append(i);
                 }
             }
             editor.clear();
-            editor.putString(KEY_FAVOURITE_EVENTS, newStr);
+            editor.putString(KEY_FAVOURITE_EVENTS, newStr.toString());
             editor.apply();
         }
     }
