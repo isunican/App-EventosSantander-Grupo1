@@ -1,12 +1,9 @@
 package com.isunican.eventossantander.presenter.categoryfilter;
 
-import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
 import com.isunican.eventossantander.view.categoryfilter.ICategoryContract;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class CategoryPresenter implements ICategoryContract.Presenter {

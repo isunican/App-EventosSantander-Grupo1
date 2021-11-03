@@ -183,9 +183,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        if (info == null) {
-            return false;
-        }else {return true;}
+        return info != null;
     }
 
     @Override
@@ -209,7 +207,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public final void beforeTextChanged(CharSequence s, int start, int count, int after) { return;}
+            public final void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public final void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -217,7 +215,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             }
 
             @Override
-            public final void afterTextChanged(Editable s) { return; }
+            public final void afterTextChanged(Editable s) { }
 
         });
         ActionBar actionBar = getSupportActionBar();
