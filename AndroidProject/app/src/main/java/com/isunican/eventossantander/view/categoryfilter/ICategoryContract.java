@@ -15,7 +15,7 @@ public interface ICategoryContract {
 
     public interface View {
 
-        void onAplicarClicked();
+
 
     }
 

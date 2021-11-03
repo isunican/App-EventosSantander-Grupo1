@@ -46,7 +46,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
     private Toast msgToast;
 
-    private boolean firstUse = true;
+    private boolean categoryFilter = false;
     ISharedPrefs sharedPrefs;
 
     @Override
@@ -60,8 +60,8 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     @Override
     protected void onResume() {
         super.onResume();
-        if(!firstUse) presenter.onCategoryFilter();
-        firstUse = false;
+        if(categoryFilter) presenter.onCategoryFilter();
+        categoryFilter = false;
     }
 
     @Override
@@ -120,6 +120,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     }
 
     public void openCategoryFilterView() {
+        categoryFilter = true;
         Intent intent = new Intent(this, CategoryFilterActivity.class);
         startActivity(intent);
     }
