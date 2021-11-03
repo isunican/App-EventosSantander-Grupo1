@@ -33,6 +33,8 @@ public class FavouriteEventsPresenter implements IFavouriteEventsContract.Presen
         for (Integer id: idsFav) {
             if (totalEvents.containsKey(id)) {
                 favouriteEvents.add(totalEvents.get(id));
+            } else {
+                sharedPrefs.deleteFavouriteEvent(id);
             }
         }
 
