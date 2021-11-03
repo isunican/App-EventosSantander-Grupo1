@@ -128,7 +128,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
         List<Event> eventosFiltrados = new ArrayList<>();
         List<Event> eventList;
         eventList = copyAllEvents;
-        if (categorias.size() != 0) {
+        if (categorias != null) {
             for (String s : categorias) {
                 for (Event e : eventList) {
                     if (e.getCategoria().equals(s)) eventosFiltrados.add(e);

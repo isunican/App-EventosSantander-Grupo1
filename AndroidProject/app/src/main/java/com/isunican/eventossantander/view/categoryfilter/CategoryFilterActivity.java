@@ -32,9 +32,6 @@ public class CategoryFilterActivity extends AppCompatActivity implements ICatego
     private Button limpiar_button;
     private Button aplicar_button;
 
-    private Intent intent;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ISharedPrefs sharedPref = new AccessSharedPrefs(getApplicationContext());
@@ -92,8 +89,7 @@ public class CategoryFilterActivity extends AppCompatActivity implements ICatego
         finish();
     }
 
-    @Override
-    public void onAplicarClicked(){
+    private void onAplicarClicked(){
         Set<String> categorias = new HashSet<>();
         if(talleres_checkBox.isChecked()){
             categorias.add(getString(R.string.talleres));
