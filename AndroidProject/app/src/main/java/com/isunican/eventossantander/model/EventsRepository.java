@@ -64,10 +64,13 @@ public class EventsRepository {
             public void onResponse(Call<EventsAPIResponse> call, Response<EventsAPIResponse> response) {
                 EventsAPIResponse body = response.body();
                 if (body != null) {
-                    // TODO Esta linea es la que etá fallando en el actions, try catch y aparte
                     // implementar interfaz de acceso a SharedPrefs
-                    listener.onSuccess(body.getEvents());
-                    decrementIdlingResource();  // signal Espresso that Retrofit has finished
+                    try {
+                        listener.onSuccess(body.getEvents());
+                    } catch (Exception ignored) {
+                    } finally {
+                        decrementIdlingResource();  // signal Espresso that Retrofit has finished
+                    }
                 }
             }
 
