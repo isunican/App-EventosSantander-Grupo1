@@ -21,16 +21,14 @@ public class CategoryPresenter implements ICategoryContract.Presenter {
 
     @Override
     public void onAplicarFiltroCategoria(Set<String> categorias) {
-
         sharedPrefs.setSelectedCategories(categorias);
-
     }
 
     @Override
     public boolean getEstadoCheckBoxes(String checkBox){
         Set<String> categorias = sharedPrefs.getSelectedCategories();
-        if (categorias != null) {
-            if (categorias.contains(checkBox)) return true;
+        if (categorias != null && categorias.contains(checkBox)) {
+            return true;
         }
         return false;
     }
