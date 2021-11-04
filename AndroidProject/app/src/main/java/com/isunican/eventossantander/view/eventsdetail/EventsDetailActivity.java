@@ -78,16 +78,20 @@ public class EventsDetailActivity extends AppCompatActivity implements IEventsDe
         boolean fav = sharedPrefs.checkFavouriteById(event.getIdentificador());
         if (fav){
             ib.setImageResource(R.drawable.estrella_rellena);
+            ib.setTag(R.drawable.estrella_rellena);
         } else {
             ib.setImageResource(R.drawable.estrella);
+            ib.setTag(R.drawable.estrella);
         }
         ib.setOnClickListener(view -> {
             boolean fav2 = sharedPrefs.checkFavouriteById(event.getIdentificador());
             if (fav2) {
                 ib.setImageResource(R.drawable.estrella);
+                ib.setTag(R.drawable.estrella);
                 presenter.onFavouriteEventsClicked(event, true);
             } else {
                 ib.setImageResource(R.drawable.estrella_rellena);
+                ib.setTag(R.drawable.estrella_rellena);
                 presenter.onFavouriteEventsClicked(event, false);
             }
         });

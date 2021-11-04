@@ -3,19 +3,26 @@ package com.isunican.eventossantander.accesssharedprefs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.Build;
 import androidx.test.core.app.ApplicationProvider;
 import com.isunican.eventossantander.model.EventsRepository;
+import com.isunican.eventossantander.presenter.events.EventsPresenter;
 import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.view.events.IEventsContract;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
+import java.util.concurrent.Phaser;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -28,6 +35,10 @@ import java.util.List;
 public class AccessSharedPrefsITest {
 
     private static AccessSharedPrefs sut;
+    private static EventsPresenter eventsPresenter;
+    private static Phaser lock = EventsRepository.getLock();
+    @Mock
+    private static IEventsContract.View mockViewEvents;
 
     /**
      * Se incializan los mockups
@@ -39,6 +50,11 @@ public class AccessSharedPrefsITest {
         EventsRepository.setLocalSource();
         Context context = ApplicationProvider.getApplicationContext();
         sut = new AccessSharedPrefs(context);
+        mockViewEvents = mock(IEventsContract.View.class);
+        when(mockViewEvents.hasInternetConnection()).thenReturn(true);
+        eventsPresenter = new EventsPresenter(mockViewEvents, sut);
+        eventsPresenter.loadData(true);
+        lock.arriveAndAwaitAdvance();
     }
 
     @Test

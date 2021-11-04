@@ -92,8 +92,10 @@ public class AccessSharedPrefs implements ISharedPrefs{
 
     @Override
     public void newFavouriteEvent(int id) {
+        // Si el evento ya está en favoritos, no se añade
         if (checkFavouriteById(id)) return;
-        if (checkIfEventyExistById(id)) return;
+        // El evento tiene que existir en la lista de eventos
+        if (!checkIfEventyExistById(id)) return;
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         String ids = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);

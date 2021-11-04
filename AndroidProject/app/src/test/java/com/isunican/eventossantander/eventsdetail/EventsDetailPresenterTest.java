@@ -57,6 +57,7 @@ public class EventsDetailPresenterTest {
     @Test
     public void onFavouriteEventsClickedTest() {
         int idEventoPrueba = 1234;
+        int idEventoNulo = 99999;
         when(mockEvent.getIdentificador()).thenReturn(idEventoPrueba);
 
         // UGIC.1a Añadir un evento existente a la lista de favoritos
@@ -69,11 +70,12 @@ public class EventsDetailPresenterTest {
 
         // UGIC.1c Añadir un evento nulo a la lista de favoritos
         sut.onFavouriteEventsClicked(null, false);
-        verify(mockPreferences, times(0)).newFavouriteEvent(anyInt());
+        // En el verify comprobamos que el método newFavouriteEvent() se ha invocado como mucho 1 vez (en UGIC 1.a)
+        verify(mockPreferences, atMostOnce()).newFavouriteEvent(anyInt());
 
         // UGIC.1d Eliminar un evento nulo a la lista de favoritos
         sut.onFavouriteEventsClicked(null, true);
-        verify(mockPreferences, times(0)).deleteFavouriteEvent(anyInt());
-
+        // En el verify comprobamos que el método deleteFavouriteEvent() se ha invocado como mucho 1 vez (en UGIC 1.b)
+        verify(mockPreferences, atMostOnce()).deleteFavouriteEvent(anyInt());
     }
 }
