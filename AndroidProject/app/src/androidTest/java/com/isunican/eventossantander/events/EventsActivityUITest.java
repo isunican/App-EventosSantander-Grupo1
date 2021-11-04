@@ -1,4 +1,4 @@
-package com.isunican.eventossantander;
+package com.isunican.eventossantander.events;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -15,8 +15,10 @@ import android.view.View;
 
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.matcher.RootMatchers;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.events.EventsActivity;
 import org.junit.AfterClass;
@@ -71,7 +73,7 @@ public class EventsActivityUITest {
 
         // IVF.1a Lista con 5 coincidencias
         // Se introduce el texto poco a poco para comprobar la funcionalidad de busqueda automatica
-        onView(withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(0,4)));
+        onView(ViewMatchers.withId(R.id.et_PalabrasClave)).perform(typeText(text1.substring(0,4)));
         onView(withId(R.id.eventsListView)).check(matches(withListSize(28)));
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("Programa Académico UIMP-2021")));
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(27).onChildView(withId(R.id.item_event_title)).check(matches(withText("Huellas de Spy en Candina")));

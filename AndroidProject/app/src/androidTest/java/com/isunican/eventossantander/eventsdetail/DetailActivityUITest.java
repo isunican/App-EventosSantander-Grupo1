@@ -1,4 +1,4 @@
-package com.isunican.eventossantander;
+package com.isunican.eventossantander.eventsdetail;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -11,8 +11,10 @@ import static org.hamcrest.Matchers.anything;
 import android.os.SystemClock;
 
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.view.events.EventsActivity;
 
@@ -48,7 +50,7 @@ public class DetailActivityUITest {
     public void vistaDetalladaEvento(){
         // Open detail view of first event
 //        SystemClock.sleep(20000);
-        onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).perform(click());
+        onData(anything()).inAdapterView(ViewMatchers.withId(R.id.eventsListView)).atPosition(0).perform(click());
 
         // Check if data matches
  //       onView(withId(R.id.event_detail_title)).check(matches(withText("Centro de Arte Faro  Cabo Mayor")));

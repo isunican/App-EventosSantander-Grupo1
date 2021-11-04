@@ -1,4 +1,4 @@
-package com.isunican.eventossantander;
+package com.isunican.eventossantander.accesssharedprefs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,29 +45,38 @@ public class AccessSharedPrefsITest {
     public void newFavouriteEventTest() {
         // Lista de favoritos
         List<Integer> listaFavs;
-        // Se comprueba que previamente la lista esta a cero
+
+        // ** IGIC.2a - Se añade evento que existe y no esta a favoritos **
+        int idEventoExiste = 44291;
+        // Se comprueba el tamaño de la lista antes de intentar añadir el evento.
         listaFavs = sut.loadFavouritesId();
         assertEquals(0, listaFavs.size());
-
-        // IGIC.2a - Se añade evento que existe y no esta a favoritos
-        int idEventoExiste = 44291;
+        // Se añade un evento que existe
         sut.newFavouriteEvent(idEventoExiste);
         listaFavs = sut.loadFavouritesId();
         assertEquals(idEventoExiste,listaFavs.get(0).intValue());
         assertEquals(1, listaFavs.size());
 
-        // IGIC.2b - Se intenta añadir evento que no existe y no esta en favoritos
+        // ** IGIC.2b - Se intenta añadir evento que no existe y no esta en favoritos **
         int idEventoInex = 99999;
+        // Se comprueba el tamaño de la lista antes de intentar añadir el evento.
+        listaFavs = sut.loadFavouritesId();
+        assertEquals(1, listaFavs.size());
         sut.newFavouriteEvent(idEventoInex);
         listaFavs = sut.loadFavouritesId();
         assertFalse(listaFavs.contains(idEventoInex));
         // El tamaño no cambia porque no se debe de añadir el evento
         assertEquals(1, listaFavs.size());
 
-        // IGIC.2c - Se añade evento que existe y ya esta a favoritos
+        // ** IGIC.2c - Se añade evento que existe y ya esta a favoritos **
         // Se comprueba que el evento ya se ha añadido en el caso de uso IGIC.2a
         assertTrue(listaFavs.contains(idEventoExiste));
+        // Se comprueba el tamaño de la lista antes de intentar añadir el evento.
+        listaFavs = sut.loadFavouritesId();
+        assertEquals(1, listaFavs.size());
+        // Se intenta añadir un evento que ya esta en favoritos
         sut.newFavouriteEvent(idEventoExiste);
+        // Se comprueba que el tamaño de la lista antes de añadir el evento  no debe cambiar
         listaFavs = sut.loadFavouritesId();
         assertEquals(1, listaFavs.size());
     }
