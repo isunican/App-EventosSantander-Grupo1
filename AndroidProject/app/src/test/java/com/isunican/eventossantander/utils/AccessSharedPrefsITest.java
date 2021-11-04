@@ -1,4 +1,4 @@
-package com.isunican.eventossantander.accesssharedprefs;
+package com.isunican.eventossantander.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

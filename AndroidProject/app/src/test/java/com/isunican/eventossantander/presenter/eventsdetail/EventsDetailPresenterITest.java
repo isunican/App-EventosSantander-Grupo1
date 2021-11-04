@@ -1,4 +1,4 @@
-package com.isunican.eventossantander.eventsdetail;
+package com.isunican.eventossantander.presenter.eventsdetail;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -10,7 +10,6 @@ import android.os.Build;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
-import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
 import com.isunican.eventossantander.utils.AccessSharedPrefs;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;

@@ -1,8 +1,7 @@
-package com.isunican.eventossantander.eventsdetail;
+package com.isunican.eventossantander.presenter.eventsdetail;
 
 // unican
 import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 // junit

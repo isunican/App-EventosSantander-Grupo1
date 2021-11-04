@@ -1,4 +1,4 @@
-package com.isunican.eventossantander.events;
+package com.isunican.eventossantander.androidTest.events;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;

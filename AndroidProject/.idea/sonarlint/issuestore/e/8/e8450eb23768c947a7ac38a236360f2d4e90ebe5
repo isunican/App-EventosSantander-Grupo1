@@ -1,0 +1,15 @@
+
+O
+java:S1874¦"3Remove this use of "NetworkInfo"; it is deprecated.(·ñõ³úÿÿÿÿ
+J
+java:S1905¦".Remove this unnecessary cast to "NetworkInfo".(·ñõ³úÿÿÿÿ
+O
+java:S1874¦"3Remove this use of "NetworkInfo"; it is deprecated.(·ñõ³úÿÿÿÿ
+S
+java:S1874§"<Remove this use of "getActiveNetworkInfo"; it is deprecated.(‹§ÿÚ
+]
+java:S1126©"AReplace this if-then-else statement by a single return statement.(´•®§þÿÿÿÿ
+7
+java:S3626Ã"Remove this redundant jump.(²Ø¨Ùøÿÿÿÿ
+1
+java:S3626Ë"Remove this redundant jump.(Úöûm
