@@ -17,6 +17,9 @@ public class EventsDetailPresenter implements IEventsDetailContract.Presenter {
 
     @Override
     public void onFavouriteEventsClicked(Event event, boolean eliminar) {
+        if (event == null){
+            return;
+        }
         if (eliminar){
             sharedPrefs.deleteFavouriteEvent(event.getIdentificador());
         }else{
