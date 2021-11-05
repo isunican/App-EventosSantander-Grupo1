@@ -1,11 +1,7 @@
 package com.isunican.eventossantander.presenter.events;
-import android.content.Context;
-import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.model.EventsRepository;
 
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
-
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
@@ -22,6 +18,8 @@ import java.util.regex.Pattern;
 
 public class EventsPresenter implements IEventsContract.Presenter {
 
+    private static final String ASCII = "[^\\p{ASCII}]";
+
     private final IEventsContract.View view;
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
@@ -29,7 +27,6 @@ public class EventsPresenter implements IEventsContract.Presenter {
     private ISharedPrefs sharedPrefs;
 
     private Map<Event, String> eventToStringMap;
-    private Map<Integer, Event> eventsByIdMap;
 
     public EventsPresenter(IEventsContract.View view, ISharedPrefs sharedPrefs) {
         this.view = view;
@@ -88,10 +85,8 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     private void initEventToStringMap(List<Event> copyAllEvents) {
         eventToStringMap = new HashMap<>();
-        eventsByIdMap = new HashMap<>();
         for (Event e: copyAllEvents) {
             eventToStringMap.put(e, e.toString().toLowerCase());
-            eventsByIdMap.put(e.getIdentificador(), e);
         }
     }
 
@@ -129,7 +124,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
     public void onKeywordsFilter(String search, boolean showMsg, boolean searchInCached) {
         List<Event> eventosFiltrados = new ArrayList<>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
-        search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
+        search = search.replaceAll(ASCII, ""); // Para las tildes
         Pattern p = Pattern.compile(search, Pattern.CASE_INSENSITIVE);
         Matcher m;
         List<Event> eventList;
@@ -155,10 +150,18 @@ public class EventsPresenter implements IEventsContract.Presenter {
         List<Event> eventosFiltrados = new ArrayList<>();
         List<Event> eventList;
         eventList = copyAllEvents;
-        if (categorias != null && categorias.size()!=0) {
+        String categoriaI;
+        String eventoI;
+        if (categorias != null && !categorias.isEmpty()) {
             for (String s : categorias) {
+                categoriaI = Normalizer.normalize(s, Normalizer.Form.NFD);
+                categoriaI = categoriaI.replaceAll(ASCII, "");
+                categoriaI = categoriaI.toLowerCase();
                 for (Event e : eventList) {
-                    if (e.getCategoria().equals(s)) eventosFiltrados.add(e);
+                    eventoI = Normalizer.normalize(e.getCategoria(), Normalizer.Form.NFD);
+                    eventoI = eventoI.replaceAll(ASCII, "");
+                    eventoI = eventoI.toLowerCase();
+                    if (categoriaI.equals(eventoI)) eventosFiltrados.add(e);
                 }
             }
             cachedEvents = eventosFiltrados;
@@ -180,20 +183,6 @@ public class EventsPresenter implements IEventsContract.Presenter {
      */
     public List<Event> getCachedEvents() {
         return cachedEvents;
-    }
-
-
-    /**
-     * Metodo para crear los favoritos al inicio de la app
-     */
-    private void creaFavoritos() {
-        List<Integer> idsFavoritos = sharedPrefs.loadFavouritesId();
-        for (Integer id: idsFavoritos) {
-            if(eventsByIdMap.containsKey(id)){
-                Event e = eventsByIdMap.get(id);
-                sharedPrefs.newFavouriteEvent(e.getIdentificador());
-            }
-        }
     }
 
 }

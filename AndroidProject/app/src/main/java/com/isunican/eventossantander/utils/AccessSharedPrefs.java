@@ -26,8 +26,7 @@ public class AccessSharedPrefs implements ISharedPrefs{
     @Override
     public Set<String> getSelectedCategories() {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_CATEGORIAS, Context.MODE_PRIVATE);
-        Set<String> categorias = sharedPref.getStringSet(KEY_CATEGORIAS, null);
-        return categorias;
+        return sharedPref.getStringSet(KEY_CATEGORIAS, null);
     }
 
     @Override

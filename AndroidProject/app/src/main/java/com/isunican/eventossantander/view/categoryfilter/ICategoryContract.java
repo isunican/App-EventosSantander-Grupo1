@@ -1,6 +1,5 @@
 package com.isunican.eventossantander.view.categoryfilter;
 
-import java.util.List;
 import java.util.Set;
 
 public interface ICategoryContract {

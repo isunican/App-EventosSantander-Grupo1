@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,8 +76,16 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
     }
 
     private static String getNormalizedCategory(Event event) {
-        return StringUtils.deleteWhitespace(
+        StringBuilder str = new StringBuilder(StringUtils.deleteWhitespace(
                 StringUtils.stripAccents(event.getCategoria()))
-                .toLowerCase();
+                .toLowerCase());
+        if (str.toString().contains("/")) {
+            String[] strSlash = str.toString().split("/");
+            str = new StringBuilder();
+            for (String s: strSlash) {
+                str.append(s);
+            }
+        }
+        return str.toString();
     }
 }

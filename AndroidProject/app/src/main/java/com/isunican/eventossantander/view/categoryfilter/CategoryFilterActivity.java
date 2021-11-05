@@ -1,6 +1,5 @@
 package com.isunican.eventossantander.view.categoryfilter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,15 +21,12 @@ public class CategoryFilterActivity extends AppCompatActivity implements ICatego
 
     private ICategoryContract.Presenter presenter;
 
-    private CheckBox talleres_checkBox;
-    private CheckBox artes_escenicas_checkBox;
-    private CheckBox artes_plasticas_checkBox;
-    private CheckBox infantil_checkBox;
-    private CheckBox musica_checkBox;
-    private CheckBox otros_checkBox;
-
-    private Button limpiar_button;
-    private Button aplicar_button;
+    private CheckBox talleresCheckBox;
+    private CheckBox artesEscenicasCheckBox;
+    private CheckBox artesPlasticasCheckBox;
+    private CheckBox infantilCheckBox;
+    private CheckBox musicaCheckBox;
+    private CheckBox otrosCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +39,26 @@ public class CategoryFilterActivity extends AppCompatActivity implements ICatego
 
     private void configItems() {
         ActionBar actionBar = getSupportActionBar();
-        talleres_checkBox = findViewById(R.id.talleres_checkBox);
-        artes_escenicas_checkBox = findViewById(R.id.artesEscenicas_checkBox);
-        artes_plasticas_checkBox = findViewById(R.id.artesPlasticas_checkBox);
-        infantil_checkBox = findViewById(R.id.infantil_checkBox);
-        musica_checkBox = findViewById(R.id.musica_checkBox);
-        otros_checkBox = findViewById(R.id.otros_checkBox);
+        talleresCheckBox = findViewById(R.id.talleres_checkBox);
+        artesEscenicasCheckBox = findViewById(R.id.artesEscenicas_checkBox);
+        artesPlasticasCheckBox = findViewById(R.id.artesPlasticas_checkBox);
+        infantilCheckBox = findViewById(R.id.infantil_checkBox);
+        musicaCheckBox = findViewById(R.id.musica_checkBox);
+        otrosCheckBox = findViewById(R.id.otros_checkBox);
 
-        if (presenter.getEstadoCheckBoxes(getString(R.string.talleres))) talleres_checkBox.setChecked(true);
-        if (presenter.getEstadoCheckBoxes(getString(R.string.artes_escenicas))) artes_escenicas_checkBox.setChecked(true);
-        if (presenter.getEstadoCheckBoxes(getString(R.string.artes_plasticas))) artes_plasticas_checkBox.setChecked(true);
-        if (presenter.getEstadoCheckBoxes(getString(R.string.infantil))) infantil_checkBox.setChecked(true);
-        if (presenter.getEstadoCheckBoxes(getString(R.string.musica))) musica_checkBox.setChecked(true);
-        if (presenter.getEstadoCheckBoxes(getString(R.string.otros))) otros_checkBox.setChecked(true);
+        if (presenter.getEstadoCheckBoxes(getString(R.string.talleres))) talleresCheckBox.setChecked(true);
+        if (presenter.getEstadoCheckBoxes(getString(R.string.artes_escenicas))) artesEscenicasCheckBox.setChecked(true);
+        if (presenter.getEstadoCheckBoxes(getString(R.string.artes_plasticas))) artesPlasticasCheckBox.setChecked(true);
+        if (presenter.getEstadoCheckBoxes(getString(R.string.infantil))) infantilCheckBox.setChecked(true);
+        if (presenter.getEstadoCheckBoxes(getString(R.string.musica))) musicaCheckBox.setChecked(true);
+        if (presenter.getEstadoCheckBoxes(getString(R.string.otros))) otrosCheckBox.setChecked(true);
 
-        limpiar_button = findViewById(R.id.categoryFilter_button_clear);
-        aplicar_button = findViewById(R.id.categoryFilter_button_apply);
+        Button limpiarButton = findViewById(R.id.categoryFilter_button_clear);
+        Button aplicarButton = findViewById(R.id.categoryFilter_button_apply);
 
-        aplicar_button.setOnClickListener( v->{
-                    onAplicarClicked();
-                }
-        );
+        aplicarButton.setOnClickListener(v-> onAplicarClicked());
 
-        limpiar_button.setOnClickListener( v-> {
-            onLimpiarClicked();
-        }
-        );
+        limpiarButton.setOnClickListener(v-> onLimpiarClicked());
 
         actionBar.setDisplayHomeAsUpEnabled(true); // Botón home en la barra superior
         actionBar.setDisplayShowHomeEnabled(true);
@@ -91,22 +81,22 @@ public class CategoryFilterActivity extends AppCompatActivity implements ICatego
 
     private void onAplicarClicked(){
         Set<String> categorias = new HashSet<>();
-        if(talleres_checkBox.isChecked()){
+        if(talleresCheckBox.isChecked()){
             categorias.add(getString(R.string.talleres));
         }
-        if(artes_escenicas_checkBox.isChecked()){
+        if(artesEscenicasCheckBox.isChecked()){
             categorias.add(getString(R.string.artes_escenicas));
         }
-        if(artes_plasticas_checkBox.isChecked()){
+        if(artesPlasticasCheckBox.isChecked()){
             categorias.add(getString(R.string.artes_plasticas));
         }
-        if(musica_checkBox.isChecked()){
+        if(musicaCheckBox.isChecked()){
             categorias.add(getString(R.string.musica));
         }
-        if(infantil_checkBox.isChecked()){
+        if(infantilCheckBox.isChecked()){
             categorias.add(getString(R.string.infantil));
         }
-        if(otros_checkBox.isChecked()){
+        if(otrosCheckBox.isChecked()){
             categorias.add(getString(R.string.otros));
         }
 
