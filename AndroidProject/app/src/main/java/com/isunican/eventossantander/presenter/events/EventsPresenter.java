@@ -20,6 +20,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
 
     private static final String ASCII = "[^\\p{ASCII}]";
 
+    //Atributos
     private final IEventsContract.View view;
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
