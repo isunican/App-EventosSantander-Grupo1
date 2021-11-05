@@ -25,7 +25,7 @@ public class EventsRepository {
     /**
      * The data source URL can be modified. This is useful for tests.
      */
-    private static EventsAPIService.Source source = EventsAPIService.Source.AYTO;
+        private static EventsAPIService.Source source = EventsAPIService.Source.UNICAN;
 
     /*
     Problem: in some UI Tests, the tests fails because Espresso does not wait until the data
@@ -64,8 +64,14 @@ public class EventsRepository {
             public void onResponse(Call<EventsAPIResponse> call, Response<EventsAPIResponse> response) {
                 EventsAPIResponse body = response.body();
                 if (body != null) {
-                    listener.onSuccess(body.getEvents());
-                    decrementIdlingResource();  // signal Espresso that Retrofit has finished
+                    // implementar interfaz de acceso a SharedPrefs
+                    try {
+                        listener.onSuccess(body.getEvents());
+                    } catch (Exception ignored) {
+                        //Nada
+                    } finally {
+                        decrementIdlingResource();  // signal Espresso that Retrofit has finished
+                    }
                 }
             }
 

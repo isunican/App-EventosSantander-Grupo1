@@ -1,5 +1,7 @@
 package com.isunican.eventossantander.view.events;
 
+import android.content.Context;
+
 import com.isunican.eventossantander.model.Event;
 
 import java.util.List;
@@ -16,7 +18,13 @@ public interface IEventsContract {
 
         void onInfoClicked();
 
+        void onFavouriteEventsClicked();
+
+        void onCategoryFilterClicked();
+
         void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
+
+        void onCategoryFilter();
     }
 
     public interface View {
@@ -31,10 +39,16 @@ public interface IEventsContract {
 
         void openInfoView();
 
+        void openFavouriteEventsView();
+
+        void openCategoryFilterView();
+
         void onInternetConnectionFailure();
 
         boolean hasInternetConnection();
 
         void onLoadingItems();
+
+        Context getContext();
     }
 }

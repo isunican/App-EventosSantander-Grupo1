@@ -10,22 +10,35 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
+import com.isunican.eventossantander.presenter.eventsdetail.EventsDetailPresenter;
+import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.squareup.picasso.Picasso;
 
-public class EventsDetailActivity extends AppCompatActivity {
+public class EventsDetailActivity extends AppCompatActivity implements IEventsDetailContract.View{
 
     public static final String INTENT_EVENT = "INTENT_EVENT";
+
+    private IEventsDetailContract.Presenter presenter;
+    private ISharedPrefs sharedPrefs;
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_detail);
+        sharedPrefs = new AccessSharedPrefs(getApplicationContext());
+        presenter = new EventsDetailPresenter(this, sharedPrefs);
+        configItems();
 
+    }
+
+    private void configItems() {
         ActionBar actBar = getSupportActionBar();
 
         actBar.setDisplayHomeAsUpEnabled(true); // Botón home en la barra superior
@@ -61,6 +74,27 @@ public class EventsDetailActivity extends AppCompatActivity {
             startActivity(browserIntent);
         });
 
+        ImageButton ib = findViewById(R.id.event_detail_Favourite);
+        boolean fav = sharedPrefs.checkFavouriteById(event.getIdentificador());
+        if (fav){
+            ib.setImageResource(R.drawable.estrella_rellena);
+            ib.setTag(R.drawable.estrella_rellena);
+        } else {
+            ib.setImageResource(R.drawable.estrella);
+            ib.setTag(R.drawable.estrella);
+        }
+        ib.setOnClickListener(view -> {
+            boolean fav2 = sharedPrefs.checkFavouriteById(event.getIdentificador());
+            if (fav2) {
+                ib.setImageResource(R.drawable.estrella);
+                ib.setTag(R.drawable.estrella);
+                presenter.onFavouriteEventsClicked(event, true);
+            } else {
+                ib.setImageResource(R.drawable.estrella_rellena);
+                ib.setTag(R.drawable.estrella_rellena);
+                presenter.onFavouriteEventsClicked(event, false);
+            }
+        });
     }
 
     // Para cerrar la activity
@@ -69,4 +103,5 @@ public class EventsDetailActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
 }

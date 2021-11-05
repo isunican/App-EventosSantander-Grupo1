@@ -2,6 +2,7 @@ package com.isunican.eventossantander.presenter.events;
 
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
+import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.Listener;
 import com.isunican.eventossantander.view.events.IEventsContract;
 import java.text.Normalizer;
@@ -9,19 +10,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EventsPresenter implements IEventsContract.Presenter {
 
+    private static final String ASCII = "[^\\p{ASCII}]";
+
+    //Atributos
     private final IEventsContract.View view;
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
 
+    private ISharedPrefs sharedPrefs;
+
     private Map<Event, String> eventToStringMap;
 
-    public EventsPresenter(IEventsContract.View view) {
+    public EventsPresenter(IEventsContract.View view, ISharedPrefs sharedPrefs) {
         this.view = view;
+        this.sharedPrefs = sharedPrefs;
         configItems();
         loadData(true);
     }
@@ -33,7 +43,15 @@ public class EventsPresenter implements IEventsContract.Presenter {
     //Tiene que ser publico por los test. No cambiar a private aunque lo diga el sonar
     public void loadData(boolean showMessage) {
 
+        sharedPrefs.clearCategories();
+
         if (!view.hasInternetConnection()) {
+            List<Event> evLocal = loadLocalData();
+            view.onEventsLoaded(evLocal);
+            view.onLoadSuccess(evLocal.size(), showMessage);
+            cachedEvents = evLocal;
+            copyAllEvents = evLocal;
+            initEventToStringMap(copyAllEvents);
             view.onInternetConnectionFailure();
             return;
         }
@@ -46,6 +64,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 cachedEvents = data;
                 copyAllEvents = data;
                 initEventToStringMap(copyAllEvents);
+                saveData(cachedEvents);
             }
 
             @Override
@@ -55,6 +74,14 @@ public class EventsPresenter implements IEventsContract.Presenter {
                 copyAllEvents = null;
             }
         });
+    }
+
+    private List<Event> loadLocalData() {
+        return sharedPrefs.loadDataFromLocal();
+    }
+
+    private void saveData(List<Event> cachedEvents) {
+        sharedPrefs.saveDataToLocal(cachedEvents);
     }
 
     private void initEventToStringMap(List<Event> copyAllEvents) {
@@ -90,10 +117,15 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
+    public void onFavouriteEventsClicked() {
+        view.openFavouriteEventsView();
+    }
+
+    @Override
     public void onKeywordsFilter(String search, boolean showMsg, boolean searchInCached) {
         List<Event> eventosFiltrados = new ArrayList<>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
-        search = search.replaceAll("[^\\p{ASCII}]", ""); // Para las tildes
+        search = search.replaceAll(ASCII, ""); // Para las tildes
         Pattern p = Pattern.compile(search, Pattern.CASE_INSENSITIVE);
         Matcher m;
         List<Event> eventList;
@@ -112,10 +144,46 @@ public class EventsPresenter implements IEventsContract.Presenter {
         view.onEventsLoaded(eventosFiltrados);
         view.onLoadSuccess(eventosFiltrados.size(), showMsg);
     }
+
+    @Override
+    public void onCategoryFilter() {
+        Set<String> categorias = sharedPrefs.getSelectedCategories();
+        List<Event> eventosFiltrados = new ArrayList<>();
+        List<Event> eventList;
+        eventList = copyAllEvents;
+        String categoriaI;
+        String eventoI;
+        if (categorias != null && !categorias.isEmpty()) {
+            for (String s : categorias) {
+                categoriaI = Normalizer.normalize(s, Normalizer.Form.NFD);
+                categoriaI = categoriaI.replaceAll(ASCII, "");
+                categoriaI = categoriaI.toLowerCase();
+                for (Event e : eventList) {
+                    eventoI = Normalizer.normalize(e.getCategoria(), Normalizer.Form.NFD);
+                    eventoI = eventoI.replaceAll(ASCII, "");
+                    eventoI = eventoI.toLowerCase();
+                    if (categoriaI.equals(eventoI)) eventosFiltrados.add(e);
+                }
+            }
+            cachedEvents = eventosFiltrados;
+        } else{
+            eventosFiltrados = eventList;
+            cachedEvents = copyAllEvents;
+        }
+        view.onEventsLoaded(eventosFiltrados);
+        view.onLoadSuccess(eventosFiltrados.size(), true);
+    }
+
+    @Override
+    public void onCategoryFilterClicked() {
+        view.openCategoryFilterView();
+    }
+
     /**
      * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
      */
     public List<Event> getCachedEvents() {
         return cachedEvents;
     }
+
 }

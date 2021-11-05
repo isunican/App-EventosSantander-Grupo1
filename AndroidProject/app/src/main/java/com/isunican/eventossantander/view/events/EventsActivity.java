@@ -30,7 +30,11 @@ import android.widget.Toast;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
+import com.isunican.eventossantander.utils.AccessSharedPrefs;
+import com.isunican.eventossantander.utils.ISharedPrefs;
+import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
+import com.isunican.eventossantander.view.favouriteevents.FavouriteEventsActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
 
 import java.util.List;
@@ -42,12 +46,22 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
 
     private Toast msgToast;
 
+    private boolean categoryFilter = false;
+    ISharedPrefs sharedPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPrefs = new AccessSharedPrefs(getApplicationContext());
+        presenter = new EventsPresenter(this, sharedPrefs);
+    }
 
-        presenter = new EventsPresenter(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(categoryFilter) presenter.onCategoryFilter();
+        categoryFilter = false;
     }
 
     @Override
@@ -98,6 +112,19 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         startActivity(intent);
     }
 
+    @Override
+
+    public void openFavouriteEventsView() {
+        Intent intent = new Intent(this, FavouriteEventsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openCategoryFilterView() {
+        categoryFilter = true;
+        Intent intent = new Intent(this, CategoryFilterActivity.class);
+        startActivity(intent);
+    }
+
     public IEventsContract.Presenter getPresenter() {
         return presenter;
     }
@@ -126,6 +153,14 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             case R.id.menu_info:
                 presenter.onInfoClicked();
                 return true;
+
+            case R.id.menu_eventos_favoritos:
+                presenter.onFavouriteEventsClicked();
+                return true;
+
+            case R.id.menu_filtrarCategoria:
+                presenter.onCategoryFilterClicked();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -153,9 +188,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        if (info == null) {
-            return false;
-        }else {return true;}
+        return info != null;
     }
 
     @Override
@@ -179,7 +212,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public final void beforeTextChanged(CharSequence s, int start, int count, int after) { return;}
+            public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No tiene que hacer nada
+            }
 
             @Override
             public final void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -187,9 +222,12 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             }
 
             @Override
-            public final void afterTextChanged(Editable s) { return; }
+            public final void afterTextChanged(Editable s) {
+                // No tiene que hacer nada
+            }
 
         });
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false); // Desactiva el title por defecto
@@ -205,5 +243,10 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             // Aplicamos la vista personalizada
             actionBar.setCustomView(customView);
         }
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 }
