@@ -2,7 +2,6 @@ package com.isunican.eventossantander.presenter.events;
 import android.content.Context;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
-import com.isunican.eventossantander.utils.LocalEvents;
 
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;

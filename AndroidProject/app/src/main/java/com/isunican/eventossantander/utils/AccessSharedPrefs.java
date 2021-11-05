@@ -92,6 +92,10 @@ public class AccessSharedPrefs implements ISharedPrefs{
 
     @Override
     public void newFavouriteEvent(int id) {
+        // Si el evento ya está en favoritos, no se añade
+        if (checkFavouriteById(id)) return;
+        // El evento tiene que existir en la lista de eventos
+        if (!checkIfEventyExistById(id)) return;
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_FAVOURITE_EVENTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         String ids = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
@@ -111,14 +115,14 @@ public class AccessSharedPrefs implements ISharedPrefs{
         String str = sharedPref.getString(KEY_FAVOURITE_EVENTS, null);
         if (str != null) {
             String[] ids = str.split(";");
-            String newStr = "";
+            StringBuilder newStr = new StringBuilder();
             for (String i: ids) {
                 if (!i.equals(String.valueOf(id)) && !i.isEmpty()) {
-                    newStr += ";" + i;
+                    newStr.append(";").append(i);
                 }
             }
             editor.clear();
-            editor.putString(KEY_FAVOURITE_EVENTS, newStr);
+            editor.putString(KEY_FAVOURITE_EVENTS, newStr.toString());
             editor.apply();
         }
     }
@@ -133,6 +137,16 @@ public class AccessSharedPrefs implements ISharedPrefs{
                 if (i.equals(String.valueOf(id))) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfEventyExistById(int id){
+        List<Event> eventos = loadDataFromLocal();
+        for (Event e: eventos) {
+            if (e.getIdentificador() == id){
+                return true;
             }
         }
         return false;

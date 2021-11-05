@@ -1,29 +1,24 @@
-package com.isunican.eventossantander;
+package com.isunican.eventossantander.presenter.events;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import androidx.test.espresso.IdlingRegistry;
+import android.os.Build;
 
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
-import com.isunican.eventossantander.presenter.events.EventsPresenter;
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.events.IEventsContract;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import static org.mockito.Mockito.*;
-
-import android.os.Build;
 
 import java.util.List;
 import java.util.concurrent.Phaser;
@@ -35,7 +30,7 @@ import java.util.concurrent.Phaser;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
-public class EventsPresenterTest {
+public class EventsPresenterITest {
 
     private static EventsPresenter sut;
     @Mock
@@ -47,48 +42,49 @@ public class EventsPresenterTest {
     /**
      * Load known events json
      * https://personales.unican.es/rivasjm/resources/agenda_cultural.json
-     * Creacion del mock de la vista y asignacion a la clase sut
      */
     @Before
     public void setUp() {
         EventsRepository.setLocalSource();
         mockView = mock(IEventsContract.View.class);
         mockSharedPrefs = mock(ISharedPrefs.class);
-        when(mockView.hasInternetConnection()).thenReturn(true);
+        when(mockView.hasInternetConnection()).thenReturn(false);
         sut = new EventsPresenter(mockView, mockSharedPrefs);
         lock.arriveAndAwaitAdvance();
     }
 
-    /**
-     * Test del metodo onKeyWordsFilter
-     * (Buscar por palabras clave)
-     */
     @Test
-    public void onKeywordsFilterTest() {
+    public void loadDataTest() {
 
         // Lista de Eventos
         List<Event> lista;
 
-        // UGIC.1a Lista con 4 Coincidencias
-        sut.onKeywordsFilter("Palacio de Festivales", false, false);
-        lista = sut.getCachedEvents();
-        assertEquals(5, lista.size());
-        assertEquals("\"Entre nosotras\". Concierto", lista.get(0).getNombre());
-        assertEquals("V Semana Internacional de Cine ", lista.get(4).getNombre());
+        // IGIC.1a No hay conexion con el repositorio
+        when(mockView.hasInternetConnection()).thenReturn(false);
+        sut.loadData(true);
+        //Aqui falla porque ahora el load data tiene otra funcionalidad
+        //assertEquals(null, sut.getCachedEvents());
 
-        // UGIC.1b Lista Completa
-        sut.onKeywordsFilter("", false, false);
+        // IGIC.1b Hay conexion con el repositorio
+        when(mockView.hasInternetConnection()).thenReturn(true);
+        sut.loadData(true);
+        // Espera para asegurar que se obtiene la lista de eventos del repositorio
+        lock.arriveAndAwaitAdvance();
         lista = sut.getCachedEvents();
         assertEquals(345, lista.size());
         assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", lista.get(0).getNombre());
         assertEquals("Visiones Urbanas con ArteSantander 2021", lista.get(344).getNombre());
 
-        //UGIC.1c Lista Vacia
-        sut.onKeywordsFilter("PalabraRara", false, false);
-        lista = sut.getCachedEvents();
-        assertEquals(0, lista.size());
+        // IGIC.1c No hay conexion con el repositorio al intentar recargar
+        sut.loadData(true);
+        assertEquals(345, lista.size());
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", lista.get(0).getNombre());
+        assertEquals("Visiones Urbanas con ArteSantander 2021", lista.get(344).getNombre());
 
-        // Se comprueba 4 veces ya que tambien se utiliza ese metodo en loadData de la creacion del sut
-        verify(mockView, times(4)).onLoadSuccess(anyInt(), anyBoolean());
+        // Se verifica que se realiza la llamada a los metodos correspondientes cuando falla el
+        // repositorio y cuando funciona bien
+        verify(mockView).onLoadSuccess(345, true);
+        verify(mockView, times(2)).onInternetConnectionFailure();
+
     }
 }

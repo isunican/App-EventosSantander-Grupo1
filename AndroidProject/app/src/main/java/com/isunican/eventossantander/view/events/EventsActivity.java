@@ -69,7 +69,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         EventArrayAdapter adapter;
 
         adapter = new EventArrayAdapter(EventsActivity.this, 0, events);
-        ListView listView = findViewById(R.id.categorysListView);
+        ListView listView = findViewById(R.id.eventsListView);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> presenter.onEventClicked(position));

@@ -1,4 +1,4 @@
-package com.isunican.eventossantander;
+package com.isunican.eventossantander.presenter.events;
 
 import com.isunican.eventossantander.model.Event;
 
