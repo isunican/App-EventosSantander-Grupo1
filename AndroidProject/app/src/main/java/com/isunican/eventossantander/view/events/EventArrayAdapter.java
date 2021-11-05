@@ -1,6 +1,5 @@
 package com.isunican.eventossantander.view.events;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,17 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
-
 import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 
 public class EventArrayAdapter extends ArrayAdapter<Event> {
