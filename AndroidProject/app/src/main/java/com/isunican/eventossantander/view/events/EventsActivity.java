@@ -36,6 +36,7 @@ import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
 import com.isunican.eventossantander.view.eventsdetail.EventsDetailActivity;
 import com.isunican.eventossantander.view.favouriteevents.FavouriteEventsActivity;
 import com.isunican.eventossantander.view.info.InfoActivity;
+import com.isunican.eventossantander.view.selectkeywords.SelectKeywordsActivity;
 
 import java.util.List;
 
@@ -161,6 +162,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
             case R.id.menu_filtrarCategoria:
                 presenter.onCategoryFilterClicked();
                 return true;
+            case R.id.menu_seleccionar_palabras_clave:
+                presenter.onSelectKeywords();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -248,5 +252,11 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public void openSelectKeywords() {
+        Intent intent = new Intent(this, SelectKeywordsActivity.class);
+        startActivity(intent);
     }
 }

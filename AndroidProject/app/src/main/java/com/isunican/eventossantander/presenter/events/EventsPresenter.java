@@ -175,6 +175,11 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
+    public void onSelectKeywords() {
+        view.openSelectKeywords();
+    }
+
+    @Override
     public void onCategoryFilterClicked() {
         view.openCategoryFilterView();
     }

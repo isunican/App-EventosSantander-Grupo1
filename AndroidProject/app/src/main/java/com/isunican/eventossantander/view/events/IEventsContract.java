@@ -25,6 +25,8 @@ public interface IEventsContract {
         void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
 
         void onCategoryFilter();
+
+        void onSelectKeywords();
     }
 
     public interface View {
@@ -50,5 +52,7 @@ public interface IEventsContract {
         void onLoadingItems();
 
         Context getContext();
+
+        void openSelectKeywords();
     }
 }

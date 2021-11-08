@@ -3,8 +3,6 @@
     package="com.isunican.eventossantander">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -40,6 +38,10 @@
 
         <activity
             android:name=".view.categoryfilter.CategoryFilterActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".view.selectkeywords.SelectKeywordsActivity"
             android:exported="false"/>
 
     </application>
