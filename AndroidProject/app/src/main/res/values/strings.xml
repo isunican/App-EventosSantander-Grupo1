@@ -5,10 +5,10 @@
     <string name="info_text">Aplicación creada para el Proyecto Integrado del curso 2021-2022</string>
     <string name="todo">TODO</string>
     <string name="mas_informacion">Más información</string>
-    <string name="introduzca_las_palabras_clave">Introduzca las palabras clave</string>
+    <string name="introduzca_las_palabras_clave">Introduzca la palabra clave a buscar</string>
     <string name="icono_de_lupa">Icono de lupa</string>
     <string name="eventos_favoritos">Eventos Favoritos</string>
-    <string name="filtrar_por_categoria">Filtrar por categoria</string>
+    <string name="filtrar_por_categoria">Filtrar por categoría</string>
     <string name="aplicar">Aplicar</string>
     <string name="limpiar">Limpiar</string>
     <string name="talleres">Formación/Talleres</string>
@@ -17,4 +17,8 @@
     <string name="musica">Música</string>
     <string name="artes_plasticas">Artes Plásticas</string>
     <string name="artes_escenicas">Artes Escénicas</string>
+    <string name="plus">+</string>
+    <string name="introduzca_una_nueva_palabra_clave">Introduzca una nueva palabra clave</string>
+    <string name="less">-</string>
+    <string name="seleccionar_palabras_clave">Palabras Clave</string>
 </resources>
