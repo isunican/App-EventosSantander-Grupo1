@@ -18,7 +18,7 @@
     <string name="artes_plasticas">Artes Plásticas</string>
     <string name="artes_escenicas">Artes Escénicas</string>
     <string name="plus">+</string>
-    <string name="introduzca_una_nueva_palabra_clave">Introduzca una nueva palabra clave</string>
     <string name="less">-</string>
+    <string name="introduzca_una_nueva_palabra_clave">Introduzca una nueva palabra para filtrar</string>
     <string name="seleccionar_palabras_clave">Palabras Clave</string>
 </resources>

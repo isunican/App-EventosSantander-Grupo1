@@ -44,6 +44,21 @@ public class SelectKeywordsActivity extends AppCompatActivity {
         List<String> strs = new ArrayList<>();
         strs.add("FURBO");
         strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
+        strs.add("TENIS");
         KeywordsArrayAdapter adapter;
 
         adapter = new KeywordsArrayAdapter(SelectKeywordsActivity.this, 0, strs);

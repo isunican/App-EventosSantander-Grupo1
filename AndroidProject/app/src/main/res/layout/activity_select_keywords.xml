@@ -12,19 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"/>
-    <LinearLayout
+
+    <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:orientation ="horizontal">
+        android:layout_weight="0.1"
+        android:background="?attr/colorControlHighlight" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/colorControlHighlight"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/et_PalabrasClave"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
             android:layout_marginStart="@dimen/marginTextView"
             android:layout_marginEnd="@dimen/marginTextView"
+            android:layout_marginBottom="@dimen/marginTextView"
+
+            android:layout_weight="5"
             android:ems="10"
             android:gravity="center_vertical"
             android:hint="@string/introduzca_las_palabras_clave"
@@ -35,14 +45,15 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_keyword"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/plus"
-            android:background="@drawable/btn_add"
-            android:textSize="24sp"
             android:layout_marginEnd="@dimen/marginTextView"
-            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck"/>
+            android:layout_marginBottom="@dimen/marginTextView"
+
+            android:background="@drawable/btn_add"
+            android:text="@string/plus"
+            android:textSize="24sp"
+            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
 
     </LinearLayout>
