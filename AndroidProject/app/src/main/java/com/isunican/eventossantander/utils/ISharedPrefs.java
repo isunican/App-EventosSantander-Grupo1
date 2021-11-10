@@ -13,6 +13,13 @@ public interface ISharedPrefs {
 
     void clearCategories();
 
+    List<String> getSelectedKeywords();
+    void newKeyword(String keyword);
+    void deleteKeyword(String keyword);
+    void clearSelectedKeywords();
+
+
+
     List<Event> loadDataFromLocal ();
 
     void saveDataToLocal (List<Event> events);

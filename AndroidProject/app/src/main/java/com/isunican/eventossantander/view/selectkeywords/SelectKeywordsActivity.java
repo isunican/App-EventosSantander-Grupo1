@@ -16,7 +16,7 @@ import com.isunican.eventossantander.view.events.EventsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectKeywordsActivity extends AppCompatActivity {
+public class SelectKeywordsActivity extends AppCompatActivity implements ISelectKeywordsContract.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class SelectKeywordsActivity extends AppCompatActivity {
         strs.add("TENIS");
         strs.add("TENIS");
         KeywordsArrayAdapter adapter;
-
+        // Aqui se le pasa la lista al adapter
         adapter = new KeywordsArrayAdapter(SelectKeywordsActivity.this, 0, strs);
         ListView listView = findViewById(R.id.keywordsListView);
         listView.setAdapter(adapter);
