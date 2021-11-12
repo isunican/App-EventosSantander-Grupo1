@@ -27,17 +27,15 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/et_PalabrasClave"
+            android:id="@+id/et_SelectKeywords"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/marginTextView"
             android:layout_marginEnd="@dimen/marginTextView"
-            android:layout_marginBottom="@dimen/marginTextView"
-
             android:layout_weight="5"
             android:ems="10"
             android:gravity="center_vertical"
-            android:hint="@string/introduzca_las_palabras_clave"
+            android:hint="@string/introduzca_una_nueva_palabra_clave"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:textColorHint="#757575"
@@ -45,25 +43,27 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_keyword"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/marginTextView"
-            android:layout_marginBottom="@dimen/marginTextView"
-
+            android:foreground="@android:drawable/ic_input_add"
             android:background="@drawable/btn_add"
-            android:text="@string/plus"
-            android:textSize="24sp"
+            android:layout_marginEnd="@dimen/marginTextView"
             tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
-
     </LinearLayout>
+    <View
+        android:id="@+id/dividerbottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="?attr/colorControlHighlight" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_clean"
+            android:id="@+id/btn_clean_keywords"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -76,7 +76,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="NestedWeights" />
         <Button
-            android:id="@+id/btn_apply"
+            android:id="@+id/btn_apply_keywords_filter"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

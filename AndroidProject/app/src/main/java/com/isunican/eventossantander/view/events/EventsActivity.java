@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
+import com.isunican.eventossantander.presenter.selectkeywords.SelectKeywordsPresenter;
 import com.isunican.eventossantander.utils.AccessSharedPrefs;
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
@@ -48,6 +49,8 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     private Toast msgToast;
 
     private boolean categoryFilter = false;
+    private boolean keyWordsFilter = false;
+
     ISharedPrefs sharedPrefs;
 
     @Override
@@ -63,6 +66,8 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         super.onResume();
         if(categoryFilter) presenter.onCategoryFilter();
         categoryFilter = false;
+        if(keyWordsFilter) presenter.onSelectKeywordFilter();
+        keyWordsFilter = false;
     }
 
     @Override
@@ -126,9 +131,17 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         startActivity(intent);
     }
 
+    @Override
+    public void openSelectKeywordsView() {
+        keyWordsFilter = true;
+        Intent intent = new Intent(this, SelectKeywordsActivity.class);
+        startActivity(intent);
+    }
+
     public IEventsContract.Presenter getPresenter() {
         return presenter;
     }
+
 
     /*
     Menu Handling
@@ -163,7 +176,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
                 presenter.onCategoryFilterClicked();
                 return true;
             case R.id.menu_seleccionar_palabras_clave:
-                presenter.onSelectKeywords();
+                presenter.onSelectKeywordClicked();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -189,7 +202,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
     @Override
     public boolean hasInternetConnection() {
 
-        NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
+        NetworkInfo info = ((ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
         return info != null;
@@ -254,9 +267,5 @@ public class EventsActivity extends AppCompatActivity implements IEventsContract
         return getApplicationContext();
     }
 
-    @Override
-    public void openSelectKeywords() {
-        Intent intent = new Intent(this, SelectKeywordsActivity.class);
-        startActivity(intent);
-    }
+
 }
