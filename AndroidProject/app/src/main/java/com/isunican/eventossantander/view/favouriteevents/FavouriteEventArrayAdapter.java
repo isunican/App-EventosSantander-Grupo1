@@ -38,7 +38,7 @@ public class FavouriteEventArrayAdapter extends ArrayAdapter<Event> {
         View view = inflater.inflate(R.layout.events_listview_item, null);
 
         // Link subviews
-        TextView titleTxt = view.findViewById(R.id.item_keyword_name);
+        TextView titleTxt = view.findViewById(R.id.item_event_title);
         TextView dateTxt = view.findViewById(R.id.item_event_date);
         ImageView imageTxt = view.findViewById(R.id.item_event_image);
 
