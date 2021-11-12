@@ -22,11 +22,14 @@ public interface IEventsContract {
 
         void onCategoryFilterClicked();
 
+        void onSelectKeywordClicked();
+
         void onKeywordsFilter(String busqueda, boolean showMsg, boolean searchInCached);
 
         void onCategoryFilter();
 
-        void onSelectKeywords();
+        void onSelectKeywordFilter();
+
     }
 
     public interface View {
@@ -45,6 +48,8 @@ public interface IEventsContract {
 
         void openCategoryFilterView();
 
+        void openSelectKeywordsView();
+
         void onInternetConnectionFailure();
 
         boolean hasInternetConnection();
@@ -53,6 +58,5 @@ public interface IEventsContract {
 
         Context getContext();
 
-        void openSelectKeywords();
     }
 }

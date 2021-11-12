@@ -6,28 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.isunican.eventossantander.R;
-import com.isunican.eventossantander.model.Event;
-import com.isunican.eventossantander.view.events.EventsActivity;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 public class KeywordsArrayAdapter extends ArrayAdapter<String> {
 
     private final List<String> keywords;
+    ISelectKeywordsContract.Presenter presenter;
 
     public KeywordsArrayAdapter(@NonNull SelectKeywordsActivity activity, int resource, @NonNull List<String> objects) {
         super(activity, resource, objects);
         this.keywords = objects;
+        presenter = activity.getPresenter();
     }
+
 
     @NonNull
     @Override
@@ -39,12 +37,16 @@ public class KeywordsArrayAdapter extends ArrayAdapter<String> {
         View view = inflater.inflate(R.layout.keywords_listview_item, null);
 
         // Link subviews
-        TextView titleTxt = view.findViewById(R.id.item_keyword_name);
-        Button btn = view.findViewById(R.id.item_btn_less);
-
+        TextView keyword = view.findViewById(R.id.item_keyword_name);
+        Button deleteKeyorkdBtn = view.findViewById(R.id.item_btn_delete_keyword);
         // Assign values to TextViews
-        titleTxt.setText(str);
+        keyword.setText(str);
+        keyword.setTag(R.id.et_SelectKeywords);
 
+        // Assign values to Buttons
+        deleteKeyorkdBtn.setTag(R.id.item_btn_delete_keyword);
+        deleteKeyorkdBtn.setOnClickListener(v -> presenter.onDeleteKeyword(position));
         return view;
     }
+
 }

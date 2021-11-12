@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +26,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
     private List<Event> cachedEvents;
     private List<Event> copyAllEvents;
 
-    private ISharedPrefs sharedPrefs;
+    private final ISharedPrefs sharedPrefs;
 
     private Map<Event, String> eventToStringMap;
 
@@ -56,7 +57,7 @@ public class EventsPresenter implements IEventsContract.Presenter {
             return;
         }
 
-        EventsRepository.getEvents(new Listener<List<Event>>() {
+        EventsRepository.getEvents(new Listener<>() {
             @Override
             public void onSuccess(List<Event> data) {
                 view.onEventsLoaded(data);
@@ -122,6 +123,16 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
+    public void onSelectKeywordClicked() {
+        view.openSelectKeywordsView();
+    }
+
+    @Override
+    public void onCategoryFilterClicked() {
+        view.openCategoryFilterView();
+    }
+
+    @Override
     public void onKeywordsFilter(String search, boolean showMsg, boolean searchInCached) {
         List<Event> eventosFiltrados = new ArrayList<>();
         search = Normalizer.normalize(search, Normalizer.Form.NFD);
@@ -175,14 +186,52 @@ public class EventsPresenter implements IEventsContract.Presenter {
     }
 
     @Override
-    public void onSelectKeywords() {
-        view.openSelectKeywords();
+    public void onSelectKeywordFilter() {
+        List<String> palabrasClave = sharedPrefs.getSelectedKeywords();
+        List<Event> eventosFiltrados = new ArrayList<>();
+        Matcher m;
+        // Se normalizan las palabras clave
+        List<String> normalizedKeywords = normalizeStringList(palabrasClave);
+        // Se busca en cached o en localevents
+        List<Event> eventList = copyAllEvents;
+        if(!palabrasClave.isEmpty()) {
+            for (Event evento: eventList){ // Recorro todos los elementos
+                // Se busca si alguna palabra clave esta en un evento
+                for (String keyword: normalizedKeywords){
+                    if(!eventosFiltrados.contains(evento)) { // Si algun evento ya se ha añadido anteriormente no se añade dos veces
+                        Pattern p = Pattern.compile(keyword, Pattern.CASE_INSENSITIVE);
+                        m = p.matcher(Objects.requireNonNull(eventToStringMap.get(evento)));
+                        if (m.find()){
+                            eventosFiltrados.add(evento);
+                        }
+                    }
+                }
+            }
+        } else {
+            eventosFiltrados = eventList;
+            cachedEvents = copyAllEvents;
+        }
+        cachedEvents = eventosFiltrados;
+        view.onEventsLoaded(eventosFiltrados);
+        view.onLoadSuccess(eventosFiltrados.size(), true);
     }
 
-    @Override
-    public void onCategoryFilterClicked() {
-        view.openCategoryFilterView();
+    /**
+     * Metodo privado para que no salte el sonarlint
+     * @param palabrasClave lista con strings sin normalizar
+     * @return lista con strings normalizados
+     */
+    private List<String> normalizeStringList(List<String> palabrasClave) {
+        String string;
+        List<String> newList = new ArrayList<>();
+        for (String keyword: palabrasClave){
+            string = Normalizer.normalize(keyword, Normalizer.Form.NFD);
+            string = string.replaceAll(ASCII, "").toLowerCase();
+            newList.add(string);
+        }
+        return newList;
     }
+
 
     /**
      * Getter de la variable cachedEvents para poder ejecutar las pruebas unitarias.
