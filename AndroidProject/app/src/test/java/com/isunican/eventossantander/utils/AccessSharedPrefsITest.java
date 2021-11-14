@@ -11,7 +11,6 @@ import android.os.Build;
 import androidx.test.core.app.ApplicationProvider;
 import com.isunican.eventossantander.model.EventsRepository;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
-import com.isunican.eventossantander.utils.AccessSharedPrefs;
 import com.isunican.eventossantander.view.events.IEventsContract;
 
 import org.junit.Before;
@@ -21,6 +20,7 @@ import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Phaser;
 
@@ -134,5 +134,49 @@ public class AccessSharedPrefsITest {
         assertFalse(listaFavs.contains(idEventoExiste));
         // Se comprueba que la lista no cambia de tamaño
         assertEquals(0, listaFavs.size());
+    }
+
+    /**
+     * US422732-SeleccionarPalabrasClave-TestPlan
+     * Test: setSelectedKeywords(List<String> listKeywords) method
+     * @author: Pablo Almohalla Gómez
+     */
+    @Test
+    public void setSelectedKeywordsTest() {
+        // Lista de palabras clave
+        List<String> listaKeywords;
+
+        // Se comprueba que previamente la lista esta a cero
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(0, listaKeywords.size());
+
+        // ** IGIC.1a - Se añade una palabra clave que existe **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("Teatro");
+        sut.setSelectedKeywords(listaKeywords);
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(1, listaKeywords.size());
+
+        // ** IGIC.1b - Se añade una palabra clave nula **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add(null);
+        sut.setSelectedKeywords(listaKeywords);
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(0, listaKeywords.size());
+
+        // ** IGIC.1c - Se añade una palabra clave vacía **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("");
+        sut.setSelectedKeywords(listaKeywords);
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(0, listaKeywords.size());
+
+        // ** IGIC.1d - Se añaden dos palabras clave válidas **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("Teatro");
+        listaKeywords.add("Surf");
+        sut.setSelectedKeywords(listaKeywords);
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(2, listaKeywords.size());
     }
 }

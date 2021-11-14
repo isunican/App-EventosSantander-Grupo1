@@ -5,7 +5,7 @@ import java.util.List;
 public interface ISelectKeywordsContract {
 
     interface Presenter {
-        void onAplicarSelectKewords();
+        void onAplicarSelectKeywords();
         void onLoadKewordsListFromLocal();
         void onDeleteKeyword(int keywordIndex);
         void onAddKeyword(String keyword);

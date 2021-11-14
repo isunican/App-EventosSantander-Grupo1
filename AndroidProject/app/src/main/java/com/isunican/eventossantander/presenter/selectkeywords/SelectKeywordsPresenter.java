@@ -80,7 +80,7 @@ public class SelectKeywordsPresenter implements ISelectKeywordsContract.Presente
     }
 
     @Override
-    public void onAplicarSelectKewords() {
+    public void onAplicarSelectKeywords() {
         sharedPrefs.setSelectedKeywords(keywordsList);
     }
 

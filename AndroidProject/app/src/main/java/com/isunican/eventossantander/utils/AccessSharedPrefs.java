@@ -73,7 +73,9 @@ public class AccessSharedPrefs implements ISharedPrefs{
         editor.clear();
         String stringKW =";";
         for(String keyword: listKeywords) {
-            stringKW = stringKW.concat(keyword+";");
+            if (keyword != null) {
+                stringKW = stringKW.concat(keyword + ";");
+            }
         }
         editor.putString(KEY_SELECT_KEYWORDS, stringKW);
         editor.apply();

@@ -1,7 +1,6 @@
 package com.isunican.eventossantander.presenter.events;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.model.EventsRepository;
@@ -20,6 +19,7 @@ import static org.mockito.Mockito.*;
 
 import android.os.Build;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Phaser;
 
@@ -86,4 +86,57 @@ public class EventsPresenterTest {
         // Se comprueba 4 veces ya que tambien se utiliza ese metodo en loadData de la creacion del sut
         verify(mockView, times(4)).onLoadSuccess(anyInt(), anyBoolean());
     }
+
+    /**
+     * US422732-SeleccionarPalabrasClave-TestPlan
+     * Test: onSelectKeywordFilter() method
+     * @author: Pablo Almohalla Gómez
+     */
+    @Test
+    public void onSelectKeywordFilterTest() {
+
+        // Lista de eventos
+        List<Event> listaEvents;
+
+        // Lista de palabras clave
+        List<String> listaKeywords;
+
+        // ** UGIC.1a - Se añade una lista de palabras clave nula **
+        when(mockSharedPrefs.getSelectedKeywords()).thenReturn(null);
+        sut.onSelectKeywordFilter();
+        listaEvents = sut.getCachedEvents();
+        assertEquals(345, listaEvents.size());
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", listaEvents.get(0).getNombre());
+        assertEquals("Visiones Urbanas con ArteSantander 2021", listaEvents.get(344).getNombre());
+
+        // ** UGIC.1b - Se añade una lista con una palabras clave existente **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("Teatro");
+        when(mockSharedPrefs.getSelectedKeywords()).thenReturn(listaKeywords);
+        sut.onSelectKeywordFilter();
+        listaEvents = sut.getCachedEvents();
+        assertEquals(32, listaEvents.size());
+        assertEquals("\"Lo que (no) se ve\", Cuartoymitad Teatro", listaEvents.get(0).getNombre());
+        assertEquals("Calle Cultura, huellas de Laura Irizabal", listaEvents.get(31).getNombre());
+
+        // ** UGIC.1c - Se añade una lista con una palabras clave no existente **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("Esternocleidomastoideo");
+        when(mockSharedPrefs.getSelectedKeywords()).thenReturn(listaKeywords);
+        sut.onSelectKeywordFilter();
+        listaEvents = sut.getCachedEvents();
+        assertEquals(0, listaEvents.size());
+
+        // ** UGIC.1d - Se añade una lista con dos palabras clave existentes **
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("Teatro");
+        listaKeywords.add("Surf");
+        when(mockSharedPrefs.getSelectedKeywords()).thenReturn(listaKeywords);
+        sut.onSelectKeywordFilter();
+        listaEvents = sut.getCachedEvents();
+        assertEquals(33, listaEvents.size());
+        assertEquals("The Sadies", listaEvents.get(0).getNombre());
+        assertEquals("Calle Cultura, huellas de Laura Irizabal", listaEvents.get(32).getNombre());
+    }
+
 }
