@@ -20,7 +20,9 @@ import static org.mockito.Mockito.*;
 import android.os.Build;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Phaser;
 
 /**
@@ -137,6 +139,31 @@ public class EventsPresenterTest {
         assertEquals(33, listaEvents.size());
         assertEquals("The Sadies", listaEvents.get(0).getNombre());
         assertEquals("Calle Cultura, huellas de Laura Irizabal", listaEvents.get(32).getNombre());
+    }
+
+    /**
+     * US435462-FiltrarPorCategoría-TestPlan
+     * Test: onCategoryFilter() method
+     * @author: Pedro Monje Onandia
+     */
+    @Test
+    public void onCategoryFilterTest() {
+        // **UGIC.1a Se utiliza el método con dos categorías [“Otros”, “Música”] **
+        Set<String > categoriasSeleccionadas = new HashSet<String>();
+        categoriasSeleccionadas.add("Otros");
+        categoriasSeleccionadas.add("Musica");
+        when(mockSharedPrefs.getSelectedCategories()).thenReturn(categoriasSeleccionadas);
+        sut.onCategoryFilter();
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", sut.getCachedEvents().get(0).getNombre());
+        assertEquals("Museo del Agua: Historia sobre el abastecimiento de agua de Santander ", sut.getCachedEvents().get(97).getNombre());
+        assertEquals(98, sut.getCachedEvents().size());
+        // **UGIC.1b Se utiliza creando unas SharedPrefs vacias**
+        categoriasSeleccionadas = new HashSet<String>();
+        when(mockSharedPrefs.getSelectedCategories()).thenReturn(categoriasSeleccionadas);
+        sut.onCategoryFilter();
+        assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", sut.getCachedEvents().get(0).getNombre());
+        assertEquals("Visiones Urbanas con ArteSantander 2021", sut.getCachedEvents().get(344).getNombre());
+        assertEquals(345, sut.getCachedEvents().size());
     }
 
 }
