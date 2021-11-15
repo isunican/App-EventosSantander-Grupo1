@@ -6,7 +6,7 @@ public interface ISelectKeywordsContract {
 
     interface Presenter {
         void onAplicarSelectKeywords();
-        void onLoadKewordsListFromLocal();
+        void onLoadKeywordsListFromLocal();
         void onDeleteKeyword(int keywordIndex);
         void onAddKeyword(String keyword);
         void onClearSelectKeywordsFilter();

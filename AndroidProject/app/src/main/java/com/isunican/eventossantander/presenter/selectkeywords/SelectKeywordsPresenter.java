@@ -19,18 +19,18 @@ public class SelectKeywordsPresenter implements ISelectKeywordsContract.Presente
     public SelectKeywordsPresenter(SelectKeywordsActivity view, ISharedPrefs sharedPrefs) {
         this.view = view;
         this.sharedPrefs = sharedPrefs;
-        onLoadKewordsListFromLocal();
+        onLoadKeywordsListFromLocal();
     }
 
     @Override
-    public void onLoadKewordsListFromLocal() {
+    public void onLoadKeywordsListFromLocal() {
         keywordsList= sharedPrefs.getSelectedKeywords();
         view.onKeywordsLoaded(keywordsList);
     }
 
     @Override
     public void onReloadKeywords(){
-        onLoadKewordsListFromLocal();
+        onLoadKeywordsListFromLocal();
     }
 
 
