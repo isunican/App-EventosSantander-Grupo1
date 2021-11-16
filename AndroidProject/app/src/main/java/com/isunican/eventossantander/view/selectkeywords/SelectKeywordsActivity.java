@@ -169,7 +169,7 @@ public class SelectKeywordsActivity extends AppCompatActivity implements ISelect
      * Metodo de la vista que aplica el filtro por palabras clave.
      */
     private void onAplicarClicked() {
-        presenter.onAplicarSelectKewords();
+        presenter.onAplicarSelectKeywords();
         finish();
     }
 

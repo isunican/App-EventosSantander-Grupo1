@@ -23,6 +23,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.EventsRepository;
+import com.isunican.eventossantander.utils.Sleep;
 import com.isunican.eventossantander.view.events.EventsActivity;
 
 import org.junit.AfterClass;
@@ -75,11 +76,7 @@ public class AnhadirEventoAFavoritosUITest {
         // Accedo a la lista de favoritos
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
         // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Eventos Favoritos
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Sleep.sleep(1000);
         onView(withText(R.string.eventos_favoritos)).perform(click());
 
         // Compruebo que el tamaño de la lista es 1
@@ -103,11 +100,7 @@ public class AnhadirEventoAFavoritosUITest {
         // Accedo a la lista de favoritos
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
         // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Eventos Favoritos
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Sleep.sleep(1000);
         onView(withText(R.string.eventos_favoritos)).perform(click());
 
         // Compruebo que se anadido el evento a la lista por encima del anterior

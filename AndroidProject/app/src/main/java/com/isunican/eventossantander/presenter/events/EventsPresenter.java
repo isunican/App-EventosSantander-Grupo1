@@ -188,32 +188,34 @@ public class EventsPresenter implements IEventsContract.Presenter {
     @Override
     public void onSelectKeywordFilter() {
         List<String> palabrasClave = sharedPrefs.getSelectedKeywords();
-        List<Event> eventosFiltrados = new ArrayList<>();
-        Matcher m;
-        // Se normalizan las palabras clave
-        List<String> normalizedKeywords = normalizeStringList(palabrasClave);
-        // Se busca en cached o en localevents
-        List<Event> eventList = copyAllEvents;
-        if(!palabrasClave.isEmpty()) {
-            for (Event evento: eventList){ // Recorro todos los elementos
-                // Se busca si alguna palabra clave esta en un evento
-                for (String keyword: normalizedKeywords){
-                    if(!eventosFiltrados.contains(evento)) { // Si algun evento ya se ha añadido anteriormente no se añade dos veces
-                        Pattern p = Pattern.compile(keyword, Pattern.CASE_INSENSITIVE);
-                        m = p.matcher(Objects.requireNonNull(eventToStringMap.get(evento)));
-                        if (m.find()){
-                            eventosFiltrados.add(evento);
+        if (palabrasClave != null) {
+            List<Event> eventosFiltrados = new ArrayList<>();
+            Matcher m;
+            // Se normalizan las palabras clave
+            List<String> normalizedKeywords = normalizeStringList(palabrasClave);
+            // Se busca en cached o en localevents
+            List<Event> eventList = copyAllEvents;
+            if (!palabrasClave.isEmpty()) {
+                for (Event evento : eventList) { // Recorro todos los elementos
+                    // Se busca si alguna palabra clave esta en un evento
+                    for (String keyword : normalizedKeywords) {
+                        if (!eventosFiltrados.contains(evento)) { // Si algun evento ya se ha añadido anteriormente no se añade dos veces
+                            Pattern p = Pattern.compile(keyword, Pattern.CASE_INSENSITIVE);
+                            m = p.matcher(Objects.requireNonNull(eventToStringMap.get(evento)));
+                            if (m.find()) {
+                                eventosFiltrados.add(evento);
+                            }
                         }
                     }
                 }
+            } else {
+                eventosFiltrados = eventList;
+                cachedEvents = copyAllEvents;
             }
-        } else {
-            eventosFiltrados = eventList;
-            cachedEvents = copyAllEvents;
+            cachedEvents = eventosFiltrados;
+            view.onEventsLoaded(eventosFiltrados);
+            view.onLoadSuccess(eventosFiltrados.size(), true);
         }
-        cachedEvents = eventosFiltrados;
-        view.onEventsLoaded(eventosFiltrados);
-        view.onLoadSuccess(eventosFiltrados.size(), true);
     }
 
     /**
