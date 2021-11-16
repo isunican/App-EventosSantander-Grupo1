@@ -179,4 +179,34 @@ public class AccessSharedPrefsITest {
         listaKeywords = sut.getSelectedKeywords();
         assertEquals(2, listaKeywords.size());
     }
+
+    /**
+     * US435007-EliminarPalabrasClave-TestPlan
+     * Test: clearAllKeywords() method
+     * @author: Pablo Almohalla Gómez
+     */
+    @Test
+    public void clearAllKeywordsTest() {
+        // Lista de palabras clave
+        List<String> listaKeywords;
+
+        // Inicializamos la lista
+        listaKeywords = new ArrayList<>();
+        listaKeywords.add("Teatro");
+        listaKeywords.add("Surf");
+        sut.setSelectedKeywords(listaKeywords);
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(2, listaKeywords.size());
+
+        // ** IGIC.1a - Se elimina la lista con palabras clave **
+        sut.clearAllKeywords();
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(0, listaKeywords.size());
+
+        // ** IGIC.1b - Se elimina la lista vacía **
+        sut.clearAllKeywords();
+        listaKeywords = sut.getSelectedKeywords();
+        assertEquals(0, listaKeywords.size());
+    }
+
 }

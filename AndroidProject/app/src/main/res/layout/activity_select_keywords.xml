@@ -39,16 +39,16 @@
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:textColorHint="#757575"
-            tools:ignore="NestedWeights" />
+            tools:ignore="NestedWeights,TextContrastCheck,TextContrastCheck" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_keyword"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:foreground="@android:drawable/ic_input_add"
-            android:background="@drawable/btn_add"
             android:layout_marginEnd="@dimen/marginTextView"
-            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+            android:background="@drawable/btn_add"
+            android:foreground="@android:drawable/ic_input_add"
+            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     </LinearLayout>
     <View

@@ -36,7 +36,7 @@ public class SelectKeywordsPresenter implements ISelectKeywordsContract.Presente
 
     @Override
     public void onDeleteKeyword(int keywordIndex) {
-        if (keywordsList != null && keywordIndex < keywordsList.size()) {
+        if (keywordsList != null && keywordIndex < keywordsList.size() && keywordIndex >= 0) {
             String keyword = keywordsList.get(keywordIndex);
             // Se comprueba que la palabra a borrar exista
             if(keywordExists(keyword)){

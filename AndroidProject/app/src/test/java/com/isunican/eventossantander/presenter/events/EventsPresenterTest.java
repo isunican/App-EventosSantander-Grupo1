@@ -137,6 +137,15 @@ public class EventsPresenterTest {
         assertEquals(33, listaEvents.size());
         assertEquals("The Sadies", listaEvents.get(0).getNombre());
         assertEquals("Calle Cultura, huellas de Laura Irizabal", listaEvents.get(32).getNombre());
+
+        // En el verify comprobamos que el método onEventsLoaded() se ha invocado 4 veces (1 del sut y 3 del test)
+        verify(mockView, times(4)).onEventsLoaded(anyList());
+
+        // En el verify comprobamos que el método onLoadSuccess() se ha invocado 4 veces (1 del sut y 3 del test)
+        verify(mockView, times(4)).onLoadSuccess(anyInt(), anyBoolean());
+
+        // En el verify comprobamos que el método getSelectedKeywords() se ha invocado 4 veces
+        verify(mockSharedPrefs, times(4)).getSelectedKeywords();
     }
 
 }
