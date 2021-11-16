@@ -149,18 +149,26 @@ public class EventsPresenterTest {
     @Test
     public void onCategoryFilterTest() {
         // **UGIC.1a Se utiliza el método con dos categorías [“Otros”, “Música”] **
+        // Se crea el Set de strings en el que irán los nombres de las categorías
         Set<String > categoriasSeleccionadas = new HashSet<String>();
+        // Se introducen las categorías en el Set
         categoriasSeleccionadas.add("Otros");
         categoriasSeleccionadas.add("Musica");
+        // Se mockea el método que devuelve las categorías
         when(mockSharedPrefs.getSelectedCategories()).thenReturn(categoriasSeleccionadas);
-        sut.onCategoryFilter();
+        sut.onCategoryFilter(); //Se llama al método de filtrar (método que se está probando)
+        // Se comprueba que el primer y el último evento son los esperados, también se comprueba que se han filtrado 98 eventos
         assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", sut.getCachedEvents().get(0).getNombre());
         assertEquals("Museo del Agua: Historia sobre el abastecimiento de agua de Santander ", sut.getCachedEvents().get(97).getNombre());
         assertEquals(98, sut.getCachedEvents().size());
-        // **UGIC.1b Se utiliza creando unas SharedPrefs vacias**
+
+        // **UGIC.1b No se seleccionan categorías en las SharedPrefs**
+        // Se crea el Set de strings en el que irán los nombres de las categorias
         categoriasSeleccionadas = new HashSet<String>();
+        // Se mockea el método que devuelve las categorías
         when(mockSharedPrefs.getSelectedCategories()).thenReturn(categoriasSeleccionadas);
-        sut.onCategoryFilter();
+        sut.onCategoryFilter();// Se llama al método de filtrar (método que se está probando)
+        // Se comprueba que el primer y el último evento son los esperados, también se comprueba que se han filtrado 345 eventos, es decir, todos
         assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", sut.getCachedEvents().get(0).getNombre());
         assertEquals("Visiones Urbanas con ArteSantander 2021", sut.getCachedEvents().get(344).getNombre());
         assertEquals(345, sut.getCachedEvents().size());

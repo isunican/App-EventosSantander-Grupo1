@@ -103,27 +103,37 @@ public class EventsPresenterITest {
      */
     @Test
     public void onCategoryFilterTest() {
+        // Configuración inicial de la prueba
         when(mockView.hasInternetConnection()).thenReturn(true);
         Context context = ApplicationProvider.getApplicationContext();
+        // Como es una prueba de integración utilizamos unas shared preferences reales y no un mock
         AccessSharedPrefs sharedPreferencesCategoria = new AccessSharedPrefs(context);
         sut = new EventsPresenter(mockView,sharedPreferencesCategoria);
         sut.loadData(true);
         lock.arriveAndAwaitAdvance();
+
+        // **IGIC.1a Se utiliza el método con dos categorías [“Otros”, “Música”] **
+        // Se crea el Set de strings en el que irán los nombres de las categorias
         Set<String > categoriasSeleccionadas = new HashSet<String>();
         categoriasSeleccionadas.add("Otros");
         categoriasSeleccionadas.add("Musica");
+        // Se seleccionan las categorías Otros y Musica
         sharedPreferencesCategoria.setSelectedCategories(categoriasSeleccionadas);
-
-        // **IGIC.1a Se utiliza el método con dos categorías [“Otros”, “Música”] **
+        // Llamada al método de filtrar, el que se está probando
         sut.onCategoryFilter();
+        // Se comprueba que el primer y el último evento son los esperados, también se comprueba que se han filtrado 98 eventos
         assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", sut.getCachedEvents().get(0).getNombre());
         assertEquals("Museo del Agua: Historia sobre el abastecimiento de agua de Santander ", sut.getCachedEvents().get(97).getNombre());
         assertEquals(98, sut.getCachedEvents().size());
 
-        // **IGIC.1b Se utiliza creando unas SharedPrefs vacias**
+        // **IGIC.1b No hay categorías seleccionadas en las SharedPrefs**
+        // Se crea el Set de strings en el que irán los nombres de las categorias
         categoriasSeleccionadas = new HashSet<String>();
+        // No se selecciona ninguna categoría
         sharedPreferencesCategoria.setSelectedCategories(categoriasSeleccionadas);
+        // Llamada al método de filtrar, el que se está probando
         sut.onCategoryFilter();
+        // Se comprueba que el primer y el último evento son los esperados, también se comprueba que se han filtrado 345 eventos (todos)
         assertEquals("Abierto el plazo de inscripción para el Concurso Internacional de Piano de Santander Paloma O'Shea", sut.getCachedEvents().get(0).getNombre());
         assertEquals("Visiones Urbanas con ArteSantander 2021", sut.getCachedEvents().get(344).getNombre());
         assertEquals(345, sut.getCachedEvents().size());
