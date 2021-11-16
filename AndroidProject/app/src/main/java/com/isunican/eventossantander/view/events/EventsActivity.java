@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.Event;
 import com.isunican.eventossantander.presenter.events.EventsPresenter;
-import com.isunican.eventossantander.presenter.selectkeywords.SelectKeywordsPresenter;
 import com.isunican.eventossantander.utils.AccessSharedPrefs;
 import com.isunican.eventossantander.utils.ISharedPrefs;
 import com.isunican.eventossantander.view.categoryfilter.CategoryFilterActivity;
