@@ -69,13 +69,7 @@ public class SelectKeywordsActivityUITest {
     public void addKeywordIntoSelectedKeywordList() {
 
         // Accedo a la lista de palabras clave seleccionadas
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Palabras Clave
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.seleccionar_palabras_clave)).perform(click());
 
         // ** IVF.1a - Se añade una palabra clave que existe **
@@ -93,13 +87,7 @@ public class SelectKeywordsActivityUITest {
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(31).onChildView(withId(R.id.item_event_title)).check(matches(withText("Calle Cultura, huellas de Laura Irizabal")));
 
         // ** IVF.1c - Se pulsa el botón del menú Palabras Clave **
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Palabras Clave
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.seleccionar_palabras_clave)).perform(click());
         // Comprobamos que el tamaño de la lista es 1
         onView(withId(R.id.keywordsListView)).check(matches(withListSize(1)));
@@ -134,13 +122,7 @@ public class SelectKeywordsActivityUITest {
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(32).onChildView(withId(R.id.item_event_title)).check(matches(withText("Calle Cultura, huellas de Laura Irizabal")));
 
         // ** IVF.1h - Se pulsa el botón del menú Palabras Clave **
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Palabras Clave
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.seleccionar_palabras_clave)).perform(click());
         // Comprobamos que el tamaño de la lista es 2
         onView(withId(R.id.keywordsListView)).check(matches(withListSize(2)));
@@ -159,13 +141,7 @@ public class SelectKeywordsActivityUITest {
     public void deleteKeywordFromSelectedKeywordList() {
 
         // Accedo a la lista de palabras clave seleccionadas
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Palabras Clave
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.seleccionar_palabras_clave)).perform(click());
 
         // Inicializamos la lista
@@ -184,13 +160,7 @@ public class SelectKeywordsActivityUITest {
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(0).onChildView(withId(R.id.item_event_title)).check(matches(withText("The Sadies")));
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(32).onChildView(withId(R.id.item_event_title)).check(matches(withText("Calle Cultura, huellas de Laura Irizabal")));
         // Entramos al menú de Palabras Clave
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Palabras Clave
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.seleccionar_palabras_clave)).perform(click());
         // Comprobamos que el tamaño de la lista es 2
         onView(withId(R.id.keywordsListView)).check(matches(withListSize(2)));
@@ -210,13 +180,7 @@ public class SelectKeywordsActivityUITest {
         onData(anything()).inAdapterView(withId(R.id.eventsListView)).atPosition(31).onChildView(withId(R.id.item_event_title)).check(matches(withText("Calle Cultura, huellas de Laura Irizabal")));
 
         // ** IVF.1c - Se pulsa el botón del menú Palabras Clave **
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Palabras Clave
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.seleccionar_palabras_clave)).perform(click());
         // Comprobamos que el tamaño de la lista es 1
         onView(withId(R.id.keywordsListView)).check(matches(withListSize(1)));
