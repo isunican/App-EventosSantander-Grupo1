@@ -13,8 +13,10 @@
     <item
         android:id="@+id/menu_filtrarCategoria"
         android:title= "@string/filtrar_por_categoria" />
-
     <item
         android:id="@+id/menu_info"
         android:title="@string/menu_info" />
+    <item
+        android:id="@+id/menu_seleccionar_palabras_clave"
+        android:title= "@string/seleccionar_palabras_clave" />
 </menu>

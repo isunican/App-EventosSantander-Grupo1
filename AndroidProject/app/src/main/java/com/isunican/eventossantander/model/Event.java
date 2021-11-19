@@ -14,6 +14,8 @@ import android.os.Parcelable;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Event implements Parcelable {
 
     @SerializedName(value = "dc:identifier") private int identificador;
@@ -185,5 +187,30 @@ public class Event implements Parcelable {
     public static Event fromJSON(String jsonString) {
         Gson gson = new Gson();
         return gson.fromJson(jsonString, Event.class);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of Event or not
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof Event)) {
+            return false;
+        }
+
+        // typecast o to Event so that we can compare data members
+        Event event = (Event) o;
+
+        // Compare the data members and return accordingly
+        return this.getIdentificador() == event.getIdentificador();
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getIdentificador());
     }
 }

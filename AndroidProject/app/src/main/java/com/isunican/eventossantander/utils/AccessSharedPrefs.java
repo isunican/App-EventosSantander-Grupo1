@@ -16,6 +16,8 @@ public class AccessSharedPrefs implements ISharedPrefs{
     private static final String KEY_LOCAL_EVENTS = "ALL_LOCAL_EVENTS";
     private static final String NUM_EVENTS = "NUM_EVENTS";
     private static final String KEY_FAVOURITE_EVENTS = "ALL_FAVOURITE_EVENTS";
+    private static final String KEY_SELECT_KEYWORDS = "ALL_SELECT_KEYWORDS";
+
 
     private Context c;
 
@@ -23,6 +25,7 @@ public class AccessSharedPrefs implements ISharedPrefs{
         this.c = c;
     }
 
+    // --------------------- Categorias -----------------------------
     @Override
     public Set<String> getSelectedCategories() {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_CATEGORIAS, Context.MODE_PRIVATE);
@@ -46,7 +49,47 @@ public class AccessSharedPrefs implements ISharedPrefs{
         editor.apply();
     }
 
+    // --------------------- Palabras Clave -----------------------------
+    @Override
+    public List<String> getSelectedKeywords() {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_SELECT_KEYWORDS, Context.MODE_PRIVATE);
+        List<String> keywordsList = new ArrayList<>();
+        String stringKW = sharedPref.getString(KEY_SELECT_KEYWORDS, null);
+        if (stringKW!=null) {
+            String[] keywords = stringKW.split(";");
+            for (String kw : keywords) {
+                if (!kw.isEmpty()) {
+                    keywordsList.add(kw);
+                }
+            }
+        }
+        return keywordsList;
+    }
 
+    @Override
+    public void setSelectedKeywords(List<String> listKeywords) {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_SELECT_KEYWORDS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        String stringKW =";";
+        for(String keyword: listKeywords) {
+            if (keyword != null) {
+                stringKW = stringKW.concat(keyword + ";");
+            }
+        }
+        editor.putString(KEY_SELECT_KEYWORDS, stringKW);
+        editor.apply();
+    }
+
+    @Override
+    public void clearAllKeywords() {
+        SharedPreferences sharedPref = c.getSharedPreferences(KEY_SELECT_KEYWORDS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    // --------------------- ListaEventos -----------------------------
     @Override
     public List<Event> loadDataFromLocal () {
         SharedPreferences sharedPref = c.getSharedPreferences(KEY_LOCAL_EVENTS, Context.MODE_PRIVATE);
@@ -71,6 +114,8 @@ public class AccessSharedPrefs implements ISharedPrefs{
         editor.putInt(NUM_EVENTS, counter);
         editor.apply();
     }
+
+    // --------------------- Favoritos -----------------------------
 
     @Override
     public List<Integer> loadFavouritesId() {

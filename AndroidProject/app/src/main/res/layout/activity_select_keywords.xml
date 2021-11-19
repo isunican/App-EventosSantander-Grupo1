@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.selectkeywords.SelectKeywordsActivity">
+
+    <ListView
+        android:id="@+id/keywordsListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="?attr/colorControlHighlight" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/colorControlHighlight"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_SelectKeywords"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/marginTextView"
+            android:layout_marginEnd="@dimen/marginTextView"
+            android:layout_weight="5"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="@string/introduzca_una_nueva_palabra_clave"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:textColorHint="#757575"
+            tools:ignore="NestedWeights,TextContrastCheck,TextContrastCheck" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_keyword"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/marginTextView"
+            android:background="@drawable/btn_add"
+            android:foreground="@android:drawable/ic_input_add"
+            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+    </LinearLayout>
+    <View
+        android:id="@+id/dividerbottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="?attr/colorControlHighlight" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_clean_keywords"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/limpiar"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_apply"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="NestedWeights" />
+        <Button
+            android:id="@+id/btn_apply_keywords_filter"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/aplicar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_clean" />
+
+
+    </LinearLayout>
+</LinearLayout>

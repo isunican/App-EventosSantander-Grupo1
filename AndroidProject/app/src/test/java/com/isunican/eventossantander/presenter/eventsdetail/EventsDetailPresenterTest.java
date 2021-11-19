@@ -25,7 +25,6 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
-
 public class EventsDetailPresenterTest {
 
     private static EventsDetailPresenter sut;

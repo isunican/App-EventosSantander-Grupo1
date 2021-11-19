@@ -16,10 +16,10 @@ import static org.hamcrest.Matchers.anything;
 
 import android.view.View;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.isunican.eventossantander.R;
 import com.isunican.eventossantander.model.EventsRepository;
@@ -73,13 +73,7 @@ public class AnhadirEventoAFavoritosUITest {
         pressBack();
 
         // Accedo a la lista de favoritos
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Eventos Favoritos
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.eventos_favoritos)).perform(click());
 
         // Compruebo que el tamaño de la lista es 1
@@ -101,13 +95,7 @@ public class AnhadirEventoAFavoritosUITest {
         pressBack();
 
         // Accedo a la lista de favoritos
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().getContext());
-        // Introducimos una espera de 1 segundo para que de tiempo a que aparezca el desplegable con la opción de Eventos Favoritos
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
         onView(withText(R.string.eventos_favoritos)).perform(click());
 
         // Compruebo que se anadido el evento a la lista por encima del anterior
